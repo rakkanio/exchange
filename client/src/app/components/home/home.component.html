@@ -1,4 +1,4 @@
-<div class="block">
+<div class="block container">
     <div class="row">
         <div class="col">
             <h3>Create, discover buy and sell NFTs fast and securely.</h3>
@@ -10,14 +10,24 @@
         </div>
     </div>
     <div class="row gal">
-        <div class="col-md-2" *ngFor="let item of [].constructor(49); let i = index">
+      <div class="row">
+        <div class="col left-title">Top Collections(6)</div>
+        <div class="col right-title"  [routerLink]="['/collections']">All Collections</div>
+        </div>
+      <div class="col-md-2" *ngFor="let item of [].constructor(6); let i = index">
           <div class="thumbnail">
             <a href="assets/images/skulls/images/{{i}}.png" target="_blank">
+            <div class="row">
+                <div class="s-icon"></div>
+                <div class="name">Collection</div>
+            </div>
+              <div class="col-img">
               <img src="assets/images/skulls/images/{{i}}.png" alt="Lights" style="width:100%">
-              <div class="caption">
-                <p>Lorem ipsum donec id elit non mi porta gravida at eget metus.</p>
-              </div>
-            </a>
+            </div>
+            <div class="caption row">
+              <p>Collection description</p>
+            </div>
+          </a>
           </div>
         </div>
       </div>

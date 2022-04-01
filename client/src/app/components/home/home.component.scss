@@ -1,24 +1,75 @@
-.block{
-    position: relative;
-    top: 15%;
-    padding: 20px;
-}
-.col{
+.col {
     text-align: center;
 }
 
-h6{
+h6 {
     position: relative;
     top: 30px;
 }
-.discover{
+.discover {
     position: relative;
     top: 50px;
     background-color: #80808042;
 }
 
-.gal{
+.gal {
     position: relative;
     top: 50px;
     padding-bottom: 50px;
+}
+.thumbnail {
+    box-shadow: 0px 0px 5px 1px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 5px 1px;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 1.8rem;
+    padding: 10px;
+}
+
+.thumbnail:hover {
+    box-shadow: 1px 1px 5px 5px;
+}
+.thumbnail a {
+    text-decoration: none;
+}
+.name {
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    width: 100px;
+    margin-top: 7px;
+}
+.s-icon {
+    width: 40px;
+    float: left;
+    height: 40px;
+    background-color: #816e6e;
+    margin-left: 14px;
+    border-radius: 35px;
+}
+.col-img {
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+.caption {
+    text-align: center;
+    margin-top: 5px;
+    font-size: 12px;
+}
+.left-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-align: left;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.right-title {
+    text-align: right;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-decoration: underline;
+    cursor: pointer;
 }

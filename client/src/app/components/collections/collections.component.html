@@ -1,0 +1,39 @@
+<div class="block container">
+    <div class="row title">
+        <span>Discover Collections</span>
+    </div>
+    <div>
+        <mat-form-field appearance="outline" class="search">
+            <input matInput placeholder="search collection..." autofocus>
+            <!-- <mat-hint>type colelction name</mat-hint> -->
+        </mat-form-field>
+    </div>
+
+    <div class="row list">
+        <div class="table-hover table">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Collection</th>
+                        <th>24H Volume</th>
+                        <th>24H %</th>
+                        <th>Floor Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of collections; let i=index" [routerLink]="['/collections/items']">
+                        <td>{{i+1}}</td>
+                        <td> <img src="assets/images/default.jpg" alt="home_img" class="c-icon"> {{item.collectionName}}
+                        </td>
+                        <td>{{item.volume}}</td>
+                        <td>{{item.percentage}}</td>
+                        <td>{{item.price}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+</div>
