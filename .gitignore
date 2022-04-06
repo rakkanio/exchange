@@ -4,3 +4,4 @@ client/.angular/*
 client/node_modules
 client/src/assets/images/skulls
 client/dist/rakkan/assets/images/skulls
+.vscode

@@ -10,6 +10,9 @@ import { HomeComponent } from './components/home/home.component';
 import { NgMaterialsModule } from './ng-materials/ng-materials.module';
 import { CollectionsComponent } from './components/collections/collections.component';
 import { CollectionItemsComponent } from './components/collection-items/collection-items.component';
+import { UploaderComponent } from './components/uploader/uploader.component';
+import { HttpService } from './services/http.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,13 +21,15 @@ import { CollectionItemsComponent } from './components/collection-items/collecti
     FooterComponent,
     HomeComponent,
     CollectionsComponent,
-    CollectionItemsComponent
+    CollectionItemsComponent,
+    UploaderComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NgMaterialsModule
+    NgMaterialsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

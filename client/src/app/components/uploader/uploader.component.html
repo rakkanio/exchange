@@ -1,0 +1,35 @@
+<div class="block container">
+    <div class="row upload">
+        <mat-card class="example-card">
+            <form (ngSubmit)="saveData(f)" #f="ngForm">
+                <mat-card-title>Upload Image</mat-card-title>
+                <mat-card-content>
+                    <div>
+                        <mat-form-field appearance="legacy">
+                            <mat-label>Title</mat-label>
+                            <input matInput name="title" ngModel required>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field appearance="legacy">
+                            <mat-label>Description</mat-label>
+                            <input matInput name="description" ngModel required>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <mat-form-field appearance="legacy">
+                            <mat-label>Collection Name</mat-label>
+                            <input matInput name="collectionName" ngModel required>
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <input  (change)="upload($event)"  type="file"  class="custom-file-input"  id="inputGroupFile01"  aria-describedby="inputGroupFileAddon01">
+                    </div>
+                </mat-card-content>
+                <mat-card-actions style="text-align: center;">
+                    <button type="submit" style="background-color: gray; color: #fff;" mat-button>Upload</button>
+                </mat-card-actions>
+            </form>
+        </mat-card>
+    </div>
+</div>
