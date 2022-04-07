@@ -12,7 +12,7 @@ export class HttpService {
   constructor(private http: HttpClient) { }
 
   post(reqObj: any):Observable<HttpEvent<any>>{
-    const req = new HttpRequest('POST', `${environment.baseUrl}/upload`, reqObj, {
+    const req = new HttpRequest('POST', `${environment.baseUrl}/${reqObj.url}`, reqObj, {
       responseType: 'json'
     });
     return this.http.request(req);
