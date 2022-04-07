@@ -10,6 +10,7 @@ const saveDetails = async (attr) => {
         const results = await db.collection('userCollections').insertOne({ title, fileName, description, collectionName })
         return { ...data, ...results };
     } catch (err) {
+        console.log('Error while creating entry',err);
         throw err;
     }
 }
