@@ -30,7 +30,7 @@ public files:any=[];
    console.log(form, self.files);
    const reqObj= form.value;
    reqObj.files= self.files;
-   reqObj.url='/create';
+   reqObj.url='create';
    self.httpService.post(reqObj)
    .subscribe(
     (event: any) => {
