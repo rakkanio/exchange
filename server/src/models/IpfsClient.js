@@ -4,7 +4,7 @@ import { IpfsClient } from '../config';
 
 const uploadFileToIPFS = async (attr) => {
        const { fileName, filePath } = attr
-       const fileHash = await _addFile(fileName, filePath)
+       const fileHash = await _addFile(filePath, fileName)
 
        console.log('fileHash', fileHash);
 
