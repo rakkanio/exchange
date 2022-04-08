@@ -13,7 +13,7 @@ const saveDetails = async (attr) => {
         const base64 = file.base64.replace(/^data:image\/png;base64,/, '');
         const data = await fs.writeFile(`assets/${fileName}`, base64, 'base64');
         const filePath = path.join(path.resolve(), path.join('assets'))
-        const fileHash = uploadFileToIPFS({ fileName, filePath: `${filePath}/` })
+        const fileHash = uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
         const results = await db.collection('userCollections').insertOne({ title, fileName, description, collectionName })
         return { ...data, ...results, ...{ fileHash: fileHash } };
     } catch (err) {
