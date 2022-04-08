@@ -19,9 +19,10 @@ public files:any=[];
     console.log(event.target.files[0],event.target.result);
     let ext = event.target.files[0].type.split('/')[1];
     let size = event.target.files[0].size;
+    let fileName= event.target.files[0].name;
     let reader = new FileReader();
     reader.onload = (event: any) => { // called once readAsDataURL is completed
-      self.files.push({ base64: event.target.result, ext: ext,size:size });
+      self.files.push({ base64: event.target.result, ext: ext,size:size, fileName: fileName });
     }
     reader.readAsDataURL(event.target.files[0]); // read file as data url
  }
