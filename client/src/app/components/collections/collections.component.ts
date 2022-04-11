@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./collections.component.scss']
 })
 export class CollectionsComponent implements OnInit {
-  public collections: any = [
+  public collections = [
     { collectionName: 'Hydrogen', volume: 10079, percentage: '-37.5%', price: "0.45" },
     { collectionName: 'Lithium', volume: 10079, percentage: '-37.5%', price: "0.45" },
     { collectionName: 'Hydrogen', volume: 10079, percentage: '-37.5%', price: "0.45" },

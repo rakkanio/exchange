@@ -11,8 +11,10 @@ import { NgMaterialsModule } from './ng-materials/ng-materials.module';
 import { CollectionsComponent } from './components/collections/collections.component';
 import { CollectionItemsComponent } from './components/collection-items/collection-items.component';
 import { UploaderComponent } from './components/uploader/uploader.component';
-import { HttpService } from './services/http.service';
 import { HttpClientModule } from '@angular/common/http';
+import { NgxSpinnerModule } from "ngx-spinner";
+import { ToastrModule } from 'ngx-toastr';
+import { NotificationService } from './services/notification.service';
 
 @NgModule({
   declarations: [
@@ -29,9 +31,11 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     BrowserAnimationsModule,
     NgMaterialsModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxSpinnerModule,
+    ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [NotificationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

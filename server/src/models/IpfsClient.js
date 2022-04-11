@@ -1,25 +1,33 @@
 
 import { promises as fs } from 'fs'
-import { IpfsClient } from '../config';
 
 const uploadFileToIPFS = async (attr) => {
-       const { fileName, filePath } = attr
-       const fileHash = await _addFile(filePath, fileName)
-
-       console.log('fileHash', fileHash);
+       try {
+              const { fileName, filePath } = attr
+              const fileHash = await _addFile(filePath, fileName)
+              console.log('fileHash', fileHash)
+              return fileHash
+       } catch (err) {
+              console.log('Error while uploading file to IPFS server', err)
+              throw err
+       }
 
 }
 
 const _addFile = async (filePath, fileName) => {
-       const ipfs = await IpfsClient.ipfsConnection();
-       const file = await fs.readFile(filePath);
-       const fileAdded = await ipfs.add({ path: fileName, content: file })
-       const fileHash = fileAdded[0].hash
-       return fileHash
+       try {
+              // return {path: "34.png",cid: "CID(QmUY77UDEqiD2tVWqzCXm7x6pQLgYJbh1AUw72XXcsfqDP)",size: 893849}
+              const file = await fs.readFile(filePath)
+              const fileAdded = await ipfs.add({ path: fileName, content: file })
+              const fileHash = fileAdded
+              return fileHash
+       } catch (err) {
+              throw err
+       }
 }
 
 const IPFSModel = {
        uploadFileToIPFS
 }
 
-export default IPFSModel;
+export default IPFSModel

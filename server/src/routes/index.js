@@ -1,9 +1,9 @@
 import express from 'express';
 
-import apiRouter from './api';
+import collectionRouter from './collection';
 
 const app = express();
 
-app.use('/api/', apiRouter);
+app.use('/api/', collectionRouter);
 
 export default app;

@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  baseUrl:'http://rakkan.io/api'
+  baseUrl: "https://rakkan.io/api",
+  assetUrl: "https://rakkan.io/assets"
 };

@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
+import { NgxSpinnerService } from "ngx-spinner";
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-uploader',
@@ -8,39 +10,55 @@ import { HttpService } from 'src/app/services/http.service';
   styleUrls: ['./uploader.component.scss']
 })
 export class UploaderComponent implements OnInit {
-public files:any=[];
-
-  constructor(private httpService: HttpService) { }
+  public files: any = [];
+  public collections: any = []
+  constructor(private httpService: HttpService,
+    private spinner: NgxSpinnerService, private notify: NotificationService) {
+  }
 
   ngOnInit(): void {
+    this.fetchCollections()
   }
-  upload(event:any){
-    const self=this;
-    console.log(event.target.files[0],event.target.result);
+  upload(event: any) {
+    const self = this;
+    console.log(event.target.files[0], event.target.result);
     let ext = event.target.files[0].type.split('/')[1];
     let size = event.target.files[0].size;
-    let fileName= event.target.files[0].name;
+    let fileName = event.target.files[0].name;
     let reader = new FileReader();
     reader.onload = (event: any) => { // called once readAsDataURL is completed
-      self.files.push({ base64: event.target.result, ext: ext,size:size, fileName: fileName });
+      self.files.push({ base64: event.target.result, ext: ext, size: size, fileName: fileName });
     }
     reader.readAsDataURL(event.target.files[0]); // read file as data url
- }
- saveData( form: NgForm){
-   const self=this;
-   console.log(form, self.files);
-   const reqObj= form.value;
-   reqObj.files= self.files;
-   reqObj.url='create';
-   self.httpService.post(reqObj)
-   .subscribe(
-    (event: any) => {
-      console.log('success', event);
-    },
-    (err: any) => {
-      console.log(err,'error')
-    }
+  }
+  saveData(form: NgForm) {
+    const self = this;
+    console.log(form, self.files);
+    const reqObj = form.value;
+    reqObj.files = self.files;
+    reqObj.url = 'create';
+    self.httpService.post(reqObj)
+      .subscribe(
+        (event: any) => {
+          self.notify.showSuccess("Data uploaded successfully", "Success")
+          console.log('success', event);
+        },
+        (err: any) => {
+          self.notify.showError("Error while uploading data", "Error")
+          console.log(err, 'error')
+        }
+      );
+  }
 
-   );
- }
+  fetchCollections() {
+    const self = this;
+    setTimeout(() => { self.spinner.show() }, 1000)
+    const reqObj: any = {}
+    reqObj.url = 'list';
+    self.httpService.get(reqObj)
+      .subscribe((event: any) => {
+        setTimeout(() => { self.spinner.hide() }, 1000)
+        self.collections = event.data.results
+      });
+  }
 }

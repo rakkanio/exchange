@@ -11,19 +11,23 @@
                         </mat-form-field>
                     </div>
                     <div>
+                        <mat-form-field appearance="fill">
+                            <mat-label>Choose collection</mat-label>
+                            <mat-select name="collectionName" ngModel required>
+                                <mat-option *ngFor="let item of collections" [value]="item.value">
+                                    {{item.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
                         <mat-form-field appearance="legacy">
                             <mat-label>Description</mat-label>
                             <input matInput name="description" ngModel required>
                         </mat-form-field>
                     </div>
                     <div>
-                        <mat-form-field appearance="legacy">
-                            <mat-label>Collection Name</mat-label>
-                            <input matInput name="collectionName" ngModel required>
-                        </mat-form-field>
-                    </div>
-                    <div>
-                        <input  (change)="upload($event)"  type="file"  class="custom-file-input"  id="inputGroupFile01"  aria-describedby="inputGroupFileAddon01">
+                        <input (change)="upload($event)" type="file" class="custom-file-input" id="inputGroupFile01"
+                            aria-describedby="inputGroupFileAddon01">
                     </div>
                 </mat-card-content>
                 <mat-card-actions style="text-align: center;">
@@ -33,3 +37,8 @@
         </mat-card>
     </div>
 </div>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.4)" size="medium" color="#fff" type="square-jelly-box" template="<img src='assets/images/spin.gif' style='    height: 50px;
+margin-bottom: 30px;'>" [fullScreen]="true">
+    <p style="color: white"> Requesting... </p>
+</ngx-spinner>

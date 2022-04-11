@@ -3,15 +3,20 @@
         <span>Skulls</span>
     </div>
     <div class="row gal">
-        <div class="col-md-2" *ngFor="let item of [].constructor(49); let i = index">
+        <div class="col-md-2" *ngFor="let item of items; let i = index">
             <div class="thumbnail">
-                <a href="assets/images/skulls/images/{{i}}.png" target="_blank">
-                    <img src="assets/images/skulls/images/{{i}}.png" alt="Lights" style="width:100%">
+                <a href="{{imageURL}}/{{item.fileName}}" target="_blank">
+                    <img src="{{imageURL}}/{{item.fileName}}" alt="Lights" style="width:100%">
                     <div class="caption">
-                        <p>Lorem ipsum donec id elit non mi porta gravida at eget metus.</p>
+                        <p>{{item.title}}</p>
                     </div>
                 </a>
             </div>
         </div>
     </div>
 </div>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.4)" size="medium" color="#fff" type="square-jelly-box" template="<img src='assets/images/spin.gif' style='    height: 50px;
+margin-bottom: 30px;'>" [fullScreen]="true">
+    <p style="color: white"> Requesting... </p>
+</ngx-spinner>
