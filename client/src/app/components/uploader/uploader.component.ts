@@ -33,6 +33,7 @@ export class UploaderComponent implements OnInit {
   }
   saveData(form: NgForm) {
     const self = this;
+    setTimeout(() => { self.spinner.show() }, 1000)
     console.log(form, self.files);
     const reqObj = form.value;
     reqObj.files = self.files;
@@ -41,13 +42,9 @@ export class UploaderComponent implements OnInit {
       .subscribe(
         (event: any) => {
           self.notify.showSuccess("Data uploaded successfully", "Success")
+          setTimeout(() => { self.spinner.hide() }, 1000)
           console.log('success', event);
-        },
-        (err: any) => {
-          self.notify.showError("Error while uploading data", "Error")
-          console.log(err, 'error')
-        }
-      );
+        });
   }
 
   fetchCollections() {
