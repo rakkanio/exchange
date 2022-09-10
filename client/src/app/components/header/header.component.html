@@ -8,19 +8,18 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         </ul>
         <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Title, Artist, ID" aria-label="Search">
+          <!-- <input class="form-control me-2" type="search" placeholder="Title, Artist, ID" aria-label="Search"> -->
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Live</a>
+            <li class="nav-item" *ngIf="isAuth">
+              <a class="nav-link active">
+                Bal: {{accountInfo.amount || '0.00'}}
+              </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" routerLink="/collections/item/upload" href="javascript:void(0)">Upload</a>
+              <a class="nav-link active" routerLink="/collections/item/upload">Upload</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Icon</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Sync</a>
+            <li class="nav-item" *ngIf="isAuth">
+              <a class="nav-link active" (click)="disconnect()">Logout</a>
             </li>
           </ul>
         </form>

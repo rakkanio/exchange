@@ -24,7 +24,6 @@ export class HttpService {
   }
 
   public get(reqObj:any){
-    console.log(reqObj,'reqObj')
     const options = { params: reqObj.params }
     return this.http.get(`${environment.baseUrl}/${reqObj.url}`, options).pipe(catchError(this.handleError));
   }

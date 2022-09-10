@@ -37,7 +37,7 @@ export class UploaderComponent implements OnInit {
     console.log(form, self.files);
     const reqObj = form.value;
     reqObj.files = self.files;
-    reqObj.url = 'create';
+    reqObj.url = 'collection/create';
     self.httpService.post(reqObj)
       .subscribe(
         (event: any) => {
@@ -51,7 +51,7 @@ export class UploaderComponent implements OnInit {
     const self = this;
     setTimeout(() => { self.spinner.show() }, 1000)
     const reqObj: any = {}
-    reqObj.url = 'list';
+    reqObj.url = 'collection/list';
     self.httpService.get(reqObj)
       .subscribe((event: any) => {
         setTimeout(() => { self.spinner.hide() }, 1000)

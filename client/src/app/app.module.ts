@@ -15,6 +15,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { ToastrModule } from 'ngx-toastr';
 import { NotificationService } from './services/notification.service';
+import { HandlerService } from './services/handler.service';
+import { AlgoSignerService } from './services/algo-signer.service';
+import { MyAlgoService } from './services/my-algo.service';
+import { HttpService } from './services/http.service';
+import { CacheService } from './services/cache.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +40,14 @@ import { NotificationService } from './services/notification.service';
     NgxSpinnerModule,
     ToastrModule.forRoot()
   ],
-  providers: [NotificationService],
+  providers: [NotificationService,
+    AlgoSignerService,
+    MyAlgoService,
+    HttpService,
+    HandlerService,
+    CacheService,
+    HandlerService
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

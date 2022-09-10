@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AlgoSignerService } from 'src/app/services/algo-signer.service';
+import { CacheService } from 'src/app/services/cache.service';
+import { EmmiterService } from 'src/app/services/emmiter.service';
 
 @Component({
   selector: 'app-header',
@@ -6,12 +9,40 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
+  public isAuth: boolean = false;
+  public accountInfo: any = {};
+  public _authSubscription: any = null;
+  public _accountInfoSubscription: any = null;
+  constructor(private cacheService: CacheService, private event: EmmiterService,
+    private algoService: AlgoSignerService) { 
+    this._authSubscription = this.event.authStateChange.subscribe((value) => {
+      this.isAuth = !(Boolean(value));
+    });
+    this._accountInfoSubscription = this.event.accountInfoChange.subscribe((value) => {
+      this.accountInfo = value;
+    });
   }
-  logout(){
-    
+
+  async ngOnInit(): Promise<void> {
+    const self=this;
+    const active = self.cacheService.get('active');
+    if (active === 'true') {
+        self.isAuth=true;
+    }else{
+      self.clearInfo();
+    }
+    const account = this.cacheService.get('walletAddress');
+    if(account!=='null'){
+      const accountInfo = await self.algoService.getAccountInfo(account);
+      self.event.setAccountInfo(accountInfo.data);
+    }
+  }
+  disconnect() {
+    this.clearInfo();
+  }
+  clearInfo(){
+    this.cacheService.clearAll();
+    this.event.setAuth(false);
+    this.isAuth = false;
   }
 }

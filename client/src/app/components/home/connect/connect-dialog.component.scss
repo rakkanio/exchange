@@ -1,0 +1,39 @@
+.close {
+	float: right;
+	margin-top: -10px;
+	margin-right: -5px;
+	cursor: pointer;
+}
+.algo-btn{
+    width: 125px;
+    height: 43px;
+    background-color: rgba(0, 0, 0, 0.03);
+    padding: 8px;
+    border-radius: 32px;
+    border: 2px solid #3056d3;
+    cursor: pointer;
+}
+.row{
+    margin-top: 20px;
+}
+
+.title span{
+    text-align: center;
+    font-size: 14px;
+}
+
+.title{
+    text-align: center;
+}
+.main span{
+    font-size: 14px;
+    font-weight: 500;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.main img{
+    height: 25px;
+    margin-top: -3px;
+    cursor: pointer;
+}

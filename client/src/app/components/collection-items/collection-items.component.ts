@@ -23,7 +23,7 @@ export class CollectionItemsComponent implements OnInit {
     const self = this;
     const reqObj: any = {}
     reqObj.params = { collection: "skulls" }
-    reqObj.url = "/item/list";
+    reqObj.url = "collection/item/list";
     setTimeout(() => { self.spinner.show() }, 1000)
     self.httpService.get(reqObj)
       .subscribe(
