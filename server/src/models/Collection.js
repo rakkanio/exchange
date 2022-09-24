@@ -90,7 +90,7 @@ const mergeImagesToUpload = async (attr) => {
         return {mergeResponse,imgURL, fileHash}
     } catch (err) {
         console.log(err)
-        throw {err: err}
+        throw {error: err.message || err}
     }
 }
 const CollectionModel = {

@@ -17,7 +17,7 @@ const updateEntry = async (request, respose) => {
        const result = await mergeImagesToUpload({...body, ...file})
         respose.status(200).send({ message: 'success', data: result })
     } catch (err) {
-        respose.status(500).send({ isError: true, message: 'Error while saving item details', err })
+        respose.status(500).send({ isError: true, message: 'Error while saving item details', error: err.error })
     }
 }
 
