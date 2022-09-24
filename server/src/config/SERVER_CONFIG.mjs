@@ -6,6 +6,8 @@ dotenv.config({ path: path.join(__dirname, 'src', '.env') })
 
 const {
     PORT,
+    IMG_PATH,
+    SELF_SERVICE,
     BODY_LIMIT,
     MONGODB_URL,
     MONGODB_NAME,
@@ -27,6 +29,8 @@ const {
 
 const SERVER_CONFIG = {
     PORT,
+    IMG_PATH,
+    SELF_SERVICE,
     BODY_LIMIT,
     MONGODB_URL,
     MONGODB_NAME,

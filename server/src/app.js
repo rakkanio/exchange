@@ -4,6 +4,8 @@ import dotenv from 'dotenv'
 import indexRouter from './routes/index'
 import cors from 'cors'
 import bodyParser from 'body-parser'
+// import  multer  from  'multer'
+// const forms = multer({ dest: 'uploads/' })
 dotenv.config()
 import { MongoClient } from '../src/config'
 import { IpfsClient } from './config'
@@ -27,9 +29,10 @@ const __dirname = path.resolve()
 const app = express()
 
 app.use(bodyParser.json({ limit: '5mb' }))
-app.use(bodyParser.urlencoded({ extended: false, limit: '5mb' }))
-app.use(express.json())
-app.use(express.urlencoded({ extended: false, limit: '5mb' }))
+app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }))
+// app.use(express.json())
+// app.use(forms.single('file')) 
+// app.use(express.urlencoded({ extended: true, limit: '5mb' }))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'assets')))
 

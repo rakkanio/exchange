@@ -1,7 +1,7 @@
-import ApplicationController from './Application';
+import CollectionController from './Collection';
 import AlgoAccountController from './AlgoAccount';
 
 export{
-    ApplicationController,
+    CollectionController,
     AlgoAccountController
 }

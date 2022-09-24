@@ -1,5 +1,5 @@
-import { ApplicationModel } from './../models'
-const { saveDetails, listCollections, listCollectionItems } = ApplicationModel
+import { CollectionModel } from '../models'
+const { saveDetails, listCollections, listCollectionItems, mergeImagesToUpload } = CollectionModel
 
 const create = async (request, respose) => {
     const { body } = request
@@ -8,6 +8,16 @@ const create = async (request, respose) => {
         respose.status(200).send({ message: 'success', data: data })
     } catch (err) {
         respose.status(500).send({ isError: true, message: 'Error while saving item details' })
+    }
+}
+
+const updateEntry = async (request, respose) => {
+    const { body, file } = request
+    try {
+       const result = await mergeImagesToUpload({...body, ...file})
+        respose.status(200).send({ message: 'success', data: result })
+    } catch (err) {
+        respose.status(500).send({ isError: true, message: 'Error while saving item details', err })
     }
 }
 
@@ -30,9 +40,10 @@ const itemList = async (request, respose) => {
     }
 }
 
-const ApplicationController = {
+const CollectionController = {
     create,
     list,
-    itemList
+    itemList,
+    updateEntry
 }
-export default ApplicationController
+export default CollectionController

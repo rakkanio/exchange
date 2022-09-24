@@ -14,7 +14,7 @@
                         <mat-form-field appearance="fill">
                             <mat-label>Choose collection</mat-label>
                             <mat-select name="collectionName" ngModel required>
-                                <mat-option *ngFor="let item of collections" [value]="item.value">
+                                <mat-option *ngFor="let item of collections" [value]="item">
                                     {{item.name}}
                                 </mat-option>
                             </mat-select>
