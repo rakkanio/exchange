@@ -53,7 +53,7 @@ const listCollectionItems = async (attr) => {
         const results = await db.collection('userCollections').find({ 'collectionName.value': collection }).toArray()
         for (let index = 0; index < results.length; index++) {
             for (let i = 0; i < results[index].items.length; i++) {
-                results[index].items[i]['imgURL']=`${process.env.SELF_SERVICE}/${results[index].items[i].fileName}`
+                results[index].items[i]['imgURL']=`${process.env.SELF_SERVICE}/static/${results[index].items[i].fileName}`
             }   
         }
         return { results }
@@ -71,7 +71,7 @@ const mergeImagesToUpload = async (attr) => {
         const fileName=`${attr.id}/merged_${randomNumber}.png`;
         const mergeResponse = await sharp(`assets/${attr.id}/${attr.originalname}`)//.resize(1000, 800)
         .composite([{ input: `assets/${attr.id}/${dir[0]}` }]).toFile(`assets/${fileName}`)
-        const imgURL=`${process.env.SELF_SERVICE}/${fileName}`
+        const imgURL=`${process.env.SELF_SERVICE}/static/${fileName}`
         const filePath = path.join(path.resolve(), path.join(`assets`))
         const fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}`})
         const item={
@@ -90,7 +90,7 @@ const mergeImagesToUpload = async (attr) => {
         return {mergeResponse,imgURL, fileHash}
     } catch (err) {
         console.log(err)
-        throw err
+        throw {err: err}
     }
 }
 const CollectionModel = {
