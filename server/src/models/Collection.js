@@ -13,7 +13,6 @@ const { uploadFileToIPFS } = IPFSModel
 const saveDetails = async (attr) => {
     try {
         const { files, title, description, collectionName } = attr
-        const items = []
         const id = uuidv4()
         const file = files[0]
         let fileName = `${id}/${file.fileName}`
@@ -22,13 +21,15 @@ const saveDetails = async (attr) => {
         const data = await fs.writeFile(`assets/${fileName}`, base64, 'base64')
         const filePath = path.join(path.resolve(), path.join(`assets`))
         const fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
-        items.push({
+        const newItem = {
+            id,
+            collectionName,
             fileHash,
             fileName,
             description,
             title
-        })
-        const results = await db.collection('userCollections').insertOne({ id, collectionName, items })
+        }
+        const results = await db.collection('userCollections').insertOne(newItem )
 
         return { ...data, ...results, ...{ fileHash: fileHash } }
     } catch (err) {
@@ -53,8 +54,8 @@ const listCollectionItems = async (attr) => {
         const results = await db.collection('userCollections').find({ 'collectionName.value': collection }).toArray()
         for (let index = 0; index < results.length; index++) {
             for (let i = 0; i < results[index].items.length; i++) {
-                results[index].items[i]['imgURL']=`${process.env.SELF_SERVICE}/static/${results[index].items[i].fileName}`
-            }   
+                results[index].items[i]['imgURL'] = `${process.env.SELF_SERVICE}/${results[index].items[i].fileName}`
+            }
         }
         return { results }
     } catch (err) {
@@ -65,32 +66,48 @@ const listCollectionItems = async (attr) => {
 
 const mergeImagesToUpload = async (attr) => {
     try {
+        const newiItemId = uuidv4()
         const dir = await fs.readdir(`assets/${attr.id}`)
-        const data = await fs.writeFile(`assets/${attr.id}/${attr.originalname}`, attr.buffer, 'buffer')
-        const randomNumber=Math.floor(Math.random()*90000) + 10000
-        const fileName=`${attr.id}/merged_${randomNumber}.png`;
-        const mergeResponse = await sharp(`assets/${attr.id}/${attr.originalname}`)//.resize(1000, 800)
-        .composite([{ input: `assets/${attr.id}/${dir[0]}` }]).toFile(`assets/${fileName}`)
-        const imgURL=`${process.env.SELF_SERVICE}/static/${fileName}`
-        const filePath = path.join(path.resolve(), path.join(`assets`))
-        const fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}`})
-        const item={
-            fileHash,
-            title: attr.title,
-            fileName,
-            description: attr.desc
-        }
-        const itemResult = await db.collection('userCollections').findOne({ id:attr.id})
-        const {items}= itemResult
-        items.push(item)
+        const fileName = `${newiItemId}/${attr.originalname}`
+        await mkdirp(`assets/${newiItemId}`)
+        const data = await fs.writeFile(`assets/${fileName}`, attr.buffer, 'buffer')
+        const randomNumber = Math.floor(Math.random() * 90000) + 10000
+        const mergedFileName = `${attr.id}/merged_${randomNumber}.png`
 
-        const results = await db.collection('userCollections').updateOne({ id:attr.id},{$set:{'items': items}})
+        const mergeResponse = await sharp(`assets/${attr.id}/${dir[0]}`)//.resize(1000, 800)
+            .composite([{ input: `assets/${newiItemId}/${attr.originalname}` }]).toFile(`assets/${mergedFileName}`)
+
+        const imgURL = `${process.env.SELF_SERVICE}/${mergedFileName}`
+
+        const itemResult = await db.collection('userCollections').findOne({ id: attr.id })
+
+        const filePath = path.join(path.resolve(), path.join(`assets`))
+
+        let fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
+
+        const newItemObj = {
+            id: newiItemId,
+            title: attr.title,
+            description: attr.desc,
+            fileName,
+            fileHash,
+            collectionName: itemResult.collectionName
+        }
+        const newItemresults = await db.collection('userCollections').insertOne(newItemObj)
+
+        fileHash = await uploadFileToIPFS({ mergedFileName, filePath: `${filePath}/${mergedFileName}` })
+        const item = {
+            fileHash,
+            fileName: mergedFileName
+        }
+
+        const results = await db.collection('userCollections').updateOne({ id: attr.id }, { $set: { 'mergedItem': item } })
         console.log(imgURL, fileHash)
 
-        return {mergeResponse,imgURL, fileHash}
+        return { mergeResponse, imgURL, fileHash }
     } catch (err) {
         console.log(err)
-        throw {error: err.message || err}
+        throw { error: err.message || err }
     }
 }
 const CollectionModel = {
