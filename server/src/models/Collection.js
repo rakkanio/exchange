@@ -53,9 +53,10 @@ const listCollectionItems = async (attr) => {
         const { collection } = attr
         const results = await db.collection('userCollections').find({ 'collectionName.value': collection }).toArray()
         for (let index = 0; index < results.length; index++) {
-            for (let i = 0; i < results[index].items.length; i++) {
-                results[index].items[i]['imgURL'] = `${process.env.SELF_SERVICE}/${results[index].items[i].fileName}`
-            }
+                results[index]['imgURL'] = `${process.env.SELF_SERVICE}/${results[index].fileName}`
+                if(results[index].mergedItem){
+                    results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`
+                }
         }
         return { results }
     } catch (err) {
