@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  baseUrl: "https://rakkan.io/api",
-  assetUrl: "https://rakkan.io/static",
+  baseUrl: "http://54.67.5.231/api",
+  assetUrl: "http://54.67.5.231/static",
   ALERT_DESTROY_MAX_TIME: 8000,
   ALERT_DESTROY_MIN_TIME: 8000,
   ALGO_USDC_ASSET_ID: 31566704,
