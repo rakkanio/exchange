@@ -9,7 +9,11 @@ h6 {
 .discover {
     position: relative;
     top: 50px;
-    background-color: #80808042;
+    background-color: black;
+    color: #fff;
+    padding: 5px 30px 5px 30px;
+    border-radius: 25px;
+    font-size: 21px;
 }
 
 .gal {
@@ -86,4 +90,12 @@ h6 {
     border-radius: 42px;
     /* margin-top: 10px; */
     cursor: pointer;
+}
+h1{
+    font-weight: 800;
+    font-size: 54px;
+    margin: 0;
+}
+.img{
+    margin-bottom: 16px;
 }

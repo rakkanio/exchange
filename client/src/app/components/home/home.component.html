@@ -1,39 +1,14 @@
-<div class="btn-block" *ngIf="showConnect"><span class="c-btn" (click)="openConnectDialog()">CONNECT TO WALLET</span></div>
+<!-- <div class="btn-block" *ngIf="showConnect"><span class="c-btn" (click)="openConnectDialog()">CONNECT TO WALLET</span></div> -->
 <div class="block container">
   <div class="row">
-    <div class="col">
-      <h3>Create, discover buy and sell NFTs fast and securely.</h3>
-      <h6>Buy and sell you NFTs on your marketplace</h6>
-      <button class="discover" mat-raised-button>Discover</button>
+    <div class="col" style="text-align: left;">
+      <img class="img" src="assets/images/home_img.jpeg" alt="home_img" height="70px">
+      <h1>SIGNED</h1>
+      <h1>FAN ART</h1>
+      <a class="discover" [routerLink]="['/collections/items']" mat-raised-button>see collections</a>
     </div>
     <div class="col">
-      <img src="assets/images/home_img.jpeg" alt="home_img" height="200px">
-    </div>
-  </div>
-  <div class="row gal">
-    <div class="row">
-      <div class="col left-title">Top Collections(6)</div>
-      <div class="col right-title" [routerLink]="['/collections']">All Collections</div>
-    </div>
-    <div class="col-md-2" *ngFor="let item of collections; let i = index">
-      <div class="thumbnail">
-        <a [routerLink]="['/collections/items']">
-          <div class="row">
-            <div class="s-icon"></div>
-            <div class="name">{{item.name}}</div>
-          </div>
-          <div class="col-img">
-            <img src="assets/images/skulls/images/{{i}}.png" alt="Lights" style="width:100%">
-          </div>
-          <div class="caption row">
-            <p>{{item.description}}</p>
-          </div>
-        </a>
-      </div>
+      <img src="assets/images/img_3.jpeg" alt="home_img" height="350px">
     </div>
   </div>
 </div>
-<ngx-spinner bdColor="rgba(0, 0, 0, 0.4)" size="medium" color="#fff" type="square-jelly-box" template="<img src='assets/images/spin.gif' style='    height: 50px;
-margin-bottom: 30px;'>" [fullScreen]="true">
-  <p style="color: white"> Requesting... </p>
-</ngx-spinner>

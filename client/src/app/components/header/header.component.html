@@ -16,8 +16,14 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" routerLink="/collections/item/upload">Upload</a>
+              <a class="nav-link active" routerLink="/collections/item/upload">Collections</a>
             </li>
+            <li class="nav-item connect">
+              <a class="nav-link active">Connect Wallet</a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link active" routerLink="/collections/item/upload">Upload</a>
+            </li> -->
             <li class="nav-item" *ngIf="isAuth">
               <a class="nav-link active" (click)="disconnect()">Logout</a>
             </li>
