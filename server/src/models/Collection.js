@@ -66,21 +66,26 @@ const listCollectionItems = async (attr) => {
 }
 
 const mergeImagesToUpload = async (attr) => {
+    const {id, originalname, position, buffer, description, title} = attr
     try {
+        if(position && (typeof position === 'string')){
+            position = JSON.parse(position)
+        }
+        const {top, left} = position
         const newiItemId = uuidv4()
-        const dir = await fs.readdir(`assets/${attr.id}`)
-        const fileName = `${newiItemId}/${attr.originalname}`
+        const dir = await fs.readdir(`assets/${id}`)
+        const fileName = `${newiItemId}/${originalname}`
         await mkdirp(`assets/${newiItemId}`)
-        const data = await fs.writeFile(`assets/${fileName}`, attr.buffer, 'buffer')
+        const data = await fs.writeFile(`assets/${fileName}`, buffer, 'buffer')
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
-        const mergedFileName = `${attr.id}/merged_${randomNumber}.png`
+        const mergedFileName = `${id}/merged_${randomNumber}.png`
 
-        const mergeResponse = await sharp(`assets/${attr.id}/${dir[0]}`)//.resize(1000, 800)
-            .composite([{ input: `assets/${newiItemId}/${attr.originalname}` }]).toFile(`assets/${mergedFileName}`)
+        const mergeResponse = await sharp(`assets/${id}/${dir[0]}`)//.resize(1000, 800)
+            .composite([{ input: `assets/${newiItemId}/${originalname}`, top: Number(top), left:Number(left)  }]).toFile(`assets/${mergedFileName}`)
 
         const imgURL = `${process.env.SELF_SERVICE}/${mergedFileName}`
 
-        const itemResult = await db.collection('userCollections').findOne({ id: attr.id })
+        const itemResult = await db.collection('userCollections').findOne({ id: id })
 
         const filePath = path.join(path.resolve(), path.join(`assets`))
 
@@ -88,8 +93,8 @@ const mergeImagesToUpload = async (attr) => {
 
         const newItemObj = {
             id: newiItemId,
-            title: attr.title,
-            description: attr.desc,
+            title: title,
+            description: description,
             fileName,
             fileHash,
             collectionName: itemResult.collectionName
@@ -102,7 +107,7 @@ const mergeImagesToUpload = async (attr) => {
             fileName: mergedFileName
         }
 
-        const results = await db.collection('userCollections').updateOne({ id: attr.id }, { $set: { 'mergedItem': item } })
+        const results = await db.collection('userCollections').updateOne({ id: id }, { $set: { 'mergedItem': item } })
         console.log(imgURL, fileHash)
 
         return { mergeResponse, imgURL, fileHash }
