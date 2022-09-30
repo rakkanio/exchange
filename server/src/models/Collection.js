@@ -72,6 +72,7 @@ const mergeImagesToUpload = async (attr) => {
             position = JSON.parse(position)
         }
         const {top, left} = position
+        console.log(attr)
         const newiItemId = uuidv4()
         const dir = await fs.readdir(`assets/${id}`)
         const fileName = `${newiItemId}/${originalname}`
