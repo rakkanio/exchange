@@ -12,3 +12,16 @@ mat-form-field {
     margin-bottom: 30px;
     text-align: center;
 }
+
+.upload-btn{
+    width: 100%;
+    background-color: black;
+    color: #fff !important;
+    font-size: 16px;
+}
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}

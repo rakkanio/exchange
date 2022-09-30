@@ -28,7 +28,12 @@ input {
 .connect{
     background-color: gray;
     border-radius: 28px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
 .connect a{
     color: black !important;
+}
+.navbar-light .navbar-toggler{
+    background-color: #fff !important;
 }

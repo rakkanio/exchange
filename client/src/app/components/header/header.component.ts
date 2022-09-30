@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { AlgoSignerService } from 'src/app/services/algo-signer.service';
 import { CacheService } from 'src/app/services/cache.service';
 import { EmmiterService } from 'src/app/services/emmiter.service';
+import { ConnectDialogComponent } from '../home/connect/connect-dialog.component';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +16,7 @@ export class HeaderComponent implements OnInit {
   public _authSubscription: any = null;
   public _accountInfoSubscription: any = null;
   constructor(private cacheService: CacheService, private event: EmmiterService,
-    private algoService: AlgoSignerService) { 
+    private algoService: AlgoSignerService, private dialog: MatDialog) { 
     this._authSubscription = this.event.authStateChange.subscribe((value) => {
       this.isAuth = !(Boolean(value));
     });
@@ -44,5 +46,13 @@ export class HeaderComponent implements OnInit {
     this.cacheService.clearAll();
     this.event.setAuth(false);
     this.isAuth = false;
+  }
+
+  async openConnectDialog() {
+    this.dialog.open(ConnectDialogComponent, {
+      width: '400px',
+      panelClass: 'connect-dialog',
+      hasBackdrop: true
+    });
   }
 }
