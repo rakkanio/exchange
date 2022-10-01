@@ -29,7 +29,7 @@ const saveDetails = async (attr) => {
             description,
             title
         }
-        const results = await db.collection('userCollections').insertOne(newItem )
+        const results = await db.collection('userCollections').insertOne(newItem)
 
         return { ...data, ...results, ...{ fileHash: fileHash } }
     } catch (err) {
@@ -53,10 +53,10 @@ const listCollectionItems = async (attr) => {
         const { collection } = attr
         const results = await db.collection('userCollections').find({ 'collectionName.value': collection }).toArray()
         for (let index = 0; index < results.length; index++) {
-                results[index]['imgURL'] = `${process.env.SELF_SERVICE}/${results[index].fileName}`
-                if(results[index].mergedItem){
-                    results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`
-                }
+            results[index]['imgURL'] = `${process.env.SELF_SERVICE}/${results[index].fileName}`
+            if (results[index].mergedItem) {
+                results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`
+            }
         }
         return { results }
     } catch (err) {
@@ -64,14 +64,37 @@ const listCollectionItems = async (attr) => {
     }
 
 }
+const mergedListCollectionItems = async (attr) => {
+    try {
+        const { collection } = attr
+        let filteredResult=[];
+        let results = await db.collection('userCollections').find({ 'collectionName.value': collection }).toArray()
+        results = results.filter((item) => item.mergedItem !== undefined)
+        .map(item=>{
+            if(item.mergedItem.length){
+                filteredResult= filteredResult.concat(item.mergedItem)
+            }else{
+                filteredResult= filteredResult.concat([item.mergedItem])
+            }
+        //   filteredResult.push(results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`)  
+        })
+        for (let index = 0; index < filteredResult.length; index++) {
+            filteredResult[index]['imgURL'] = `${process.env.SELF_SERVICE}/${filteredResult[index].fileName}`
+        }
+        return { filteredResult }
+    } catch (err) {
+        throw err
+    }
+
+}
 
 const mergeImagesToUpload = async (attr) => {
-    const {id, originalname, position, buffer, description, title} = attr
+    const { id, originalname, position, buffer, description, title } = attr
     try {
-        if(position && (typeof position === 'string')){
+        if (position && (typeof position === 'string')) {
             position = JSON.parse(position)
         }
-        const {top, left} = position
+        const { top, left } = position
         console.log(attr)
         const newiItemId = uuidv4()
         const dir = await fs.readdir(`assets/${id}`)
@@ -82,7 +105,7 @@ const mergeImagesToUpload = async (attr) => {
         const mergedFileName = `${id}/merged_${randomNumber}.png`
 
         const mergeResponse = await sharp(`assets/${id}/${dir[0]}`)//.resize(1000, 800)
-            .composite([{ input: `assets/${newiItemId}/${originalname}`, top: Number(top), left:Number(left)  }]).toFile(`assets/${mergedFileName}`)
+            .composite([{ input: `assets/${newiItemId}/${originalname}`, top: Number(top), left: Number(left) }]).toFile(`assets/${mergedFileName}`)
 
         const imgURL = `${process.env.SELF_SERVICE}/${mergedFileName}`
 
@@ -103,12 +126,19 @@ const mergeImagesToUpload = async (attr) => {
         const newItemresults = await db.collection('userCollections').insertOne(newItemObj)
 
         fileHash = await uploadFileToIPFS({ mergedFileName, filePath: `${filePath}/${mergedFileName}` })
-        const item = {
-            fileHash,
-            fileName: mergedFileName
+        let item
+        if (itemResult.mergedItem) {
+            itemResult.mergedItem.push({
+                fileHash,
+                fileName: mergedFileName
+            })
+        } else {
+            itemResult.mergedItem = [{
+                fileHash,
+                fileName: mergedFileName
+            }]
         }
-
-        const results = await db.collection('userCollections').updateOne({ id: id }, { $set: { 'mergedItem': item } })
+        const results = await db.collection('userCollections').updateOne({ id: id }, { $set: { 'mergedItem': itemResult.mergedItem } })
         console.log(imgURL, fileHash)
 
         return { mergeResponse, imgURL, fileHash }
@@ -121,7 +151,8 @@ const CollectionModel = {
     saveDetails,
     listCollections,
     listCollectionItems,
-    mergeImagesToUpload
+    mergeImagesToUpload,
+    mergedListCollectionItems
 }
 
 export default CollectionModel

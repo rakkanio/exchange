@@ -1,5 +1,5 @@
 import { CollectionModel } from '../models'
-const { saveDetails, listCollections, listCollectionItems, mergeImagesToUpload } = CollectionModel
+const { saveDetails, listCollections, listCollectionItems,mergedListCollectionItems, mergeImagesToUpload } = CollectionModel
 
 const create = async (request, respose) => {
     const { body } = request
@@ -40,10 +40,22 @@ const itemList = async (request, respose) => {
     }
 }
 
+const mergedItemList = async (request, respose) => {
+    try {
+        const { query } = request
+        const data = await mergedListCollectionItems(query)
+        respose.status(200).send({ message: 'success', data: data })
+    } catch (err) {
+        respose.status(500).send({ isError: true, message: 'Error while fetching item list' })
+    }
+}
+
+
 const CollectionController = {
     create,
     list,
     itemList,
-    updateEntry
+    updateEntry,
+    mergedItemList
 }
 export default CollectionController

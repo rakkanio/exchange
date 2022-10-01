@@ -20,6 +20,7 @@ import { AlgoSignerService } from './services/algo-signer.service';
 import { MyAlgoService } from './services/my-algo.service';
 import { HttpService } from './services/http.service';
 import { CacheService } from './services/cache.service';
+import { CollectionMergedItemsComponent } from './components/collection-merged-items/collection-merged-items.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { CacheService } from './services/cache.service';
     HomeComponent,
     CollectionsComponent,
     CollectionItemsComponent,
-    UploaderComponent
+    UploaderComponent,
+    CollectionMergedItemsComponent
   ],
   imports: [
     BrowserModule,
