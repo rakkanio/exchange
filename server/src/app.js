@@ -30,9 +30,9 @@ const app = express()
 
 app.use(bodyParser.json({ limit: '5mb' }))
 app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }))
-// app.use(express.json())
+app.use(express.json({limit: '50mb'}))
 // app.use(forms.single('file')) 
-// app.use(express.urlencoded({ extended: true, limit: '5mb' }))
+app.use(express.urlencoded({ extended: true, limit: '5mb' }))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'assets')))
 
