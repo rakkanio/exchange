@@ -6,7 +6,7 @@ import sharp from 'sharp'
 
 import IPFSModel from './IpfsClient'
 import IPFS_METADATA from '../constants/IPFS_METADATA'
-const {METADATA}= IPFS_METADATA
+const { METADATA } = IPFS_METADATA
 // import {SERVER_CONFIG} from '../config'
 // const {IMG_PATH, SELF_SERVICE}=SERVER_CONFIG
 
@@ -23,14 +23,15 @@ const saveDetails = async (attr) => {
         const data = await fs.writeFile(`assets/${fileName}`, base64, 'base64')
         const filePath = path.join(path.resolve(), path.join(`assets`))
         const fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
-        let cidHash= String(fileHash.cid)
-        let metadata= METADATA
-        metadata.image=`ipfs://${cidHash}`
-        const metaHash = await uploadMetaDataToIPFS({ fileName:'metadata.json ', filePath: metadata })
+        let cidHash = String(fileHash.cid)
+        let metadata = METADATA
+        metadata.image = `ipfs://${cidHash}`
+        const metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
+        console.log({fileHash: cidHash, metaHash: String(metaHash.cid)})
         const newItem = {
             id,
             collectionName,
-            fileHash:cidHash,
+            fileHash: cidHash,
             fileName,
             description,
             title,
@@ -39,7 +40,7 @@ const saveDetails = async (attr) => {
         }
         const results = await db.collection('userCollections').insertOne(newItem)
 
-        return { ...data, ...results, ...{ fileHash: fileHash } }
+        return { ...data, ...results, ...{ fileHash: cidHash, metaHash: String(metaHash.cid) } }
     } catch (err) {
         console.log('Error while creating entry', err)
         throw err
@@ -75,17 +76,17 @@ const listCollectionItems = async (attr) => {
 const mergedListCollectionItems = async (attr) => {
     try {
         const { collection } = attr
-        let filteredResult=[];
+        let filteredResult = [];
         let results = await db.collection('userCollections').find({ 'collectionName.value': collection }).toArray()
         results = results.filter((item) => item.mergedItem !== undefined)
-        .map(item=>{
-            if(item.mergedItem.length){
-                filteredResult= filteredResult.concat(item.mergedItem)
-            }else{
-                filteredResult= filteredResult.concat([item.mergedItem])
-            }
-        //   filteredResult.push(results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`)  
-        })
+            .map(item => {
+                if (item.mergedItem.length) {
+                    filteredResult = filteredResult.concat(item.mergedItem)
+                } else {
+                    filteredResult = filteredResult.concat([item.mergedItem])
+                }
+                //   filteredResult.push(results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`)  
+            })
         for (let index = 0; index < filteredResult.length; index++) {
             filteredResult[index]['imgURL'] = `${process.env.SELF_SERVICE}/${filteredResult[index].fileName}`
         }
@@ -122,17 +123,17 @@ const mergeImagesToUpload = async (attr) => {
         const filePath = path.join(path.resolve(), path.join(`assets`))
 
         let fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
-        let fileCidHash= String(fileHash.cid)
-        let metadata= METADATA
-        metadata.image=`ipfs://${fileCidHash}`
-        let metaHash = await uploadMetaDataToIPFS({ fileName:'metadata.json ', filePath: metadata })
+        let fileCidHash = String(fileHash.cid)
+        let metadata = METADATA
+        metadata.image = `ipfs://${fileCidHash}`
+        let metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
 
         const newItemObj = {
             id: newiItemId,
             title: title,
             description: description,
             fileName,
-            fileHash:fileCidHash,
+            fileHash: fileCidHash,
             metadata,
             metaHash,
             collectionName: itemResult.collectionName
@@ -140,21 +141,21 @@ const mergeImagesToUpload = async (attr) => {
         const newItemresults = await db.collection('userCollections').insertOne(newItemObj)
 
         fileHash = await uploadFileToIPFS({ mergedFileName, filePath: `${filePath}/${mergedFileName}` })
-        fileCidHash= String(fileHash.cid)
-        metadata= METADATA
-        metadata.image=`ipfs://${fileCidHash}`
-        metaHash = await uploadMetaDataToIPFS({ fileName:'metadata.json ', filePath: metadata })
-        
+        fileCidHash = String(fileHash.cid)
+        metadata = METADATA
+        metadata.image = `ipfs://${fileCidHash}`
+        metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
+
         if (itemResult.mergedItem) {
             itemResult.mergedItem.push({
-                fileHash:fileCidHash,
+                fileHash: fileCidHash,
                 metaHash: String(metaHash.cid),
                 metadata,
                 fileName: mergedFileName
             })
         } else {
             itemResult.mergedItem = [{
-                fileHash:fileCidHash,
+                fileHash: fileCidHash,
                 metaHash: String(metaHash.cid),
                 metadata,
                 fileName: mergedFileName
