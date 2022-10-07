@@ -2,7 +2,7 @@ const METADATA={
     name: 'Rakkan 0001',
     decimals: 0,
     description: 'Signed card',
-    image: 'ipfs://QmQSnZq2543FSnzqFJMooKX9YZDwkREvYmUbwfqF4CEYmC',
+    image: '',
     image_integrity: 'sha256-YTeQD0RINm8Vg6U/Gl+1IAoBNJl51s0us07nNjOuze8=',
     image_mimetype: 'image/png',
     unitName: 'RKKN0001',
