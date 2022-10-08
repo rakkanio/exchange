@@ -1,16 +1,16 @@
 const METADATA={
-    name: 'Rakkan 0001',
+    name: 'Rakkan Test 1',
     decimals: 0,
     description: 'Signed card',
     image: '',
     image_integrity: 'sha256-YTeQD0RINm8Vg6U/Gl+1IAoBNJl51s0us07nNjOuze8=',
     image_mimetype: 'image/png',
-    unitName: 'RKKN0001',
-    assetName: 'Rakkan 0001',
+    unitName: 'RKKN00T1',
+    assetName: 'Rakkan Test 1',
     properties: {
       creator: {
         name: 'rakkan',
-        address: 'A7RAD6JH4EO4MYZWK7XKJZCSWIZRCVVXY7GKTJZWHVHWNZFCHP4QHS3NFM'
+        address: 'T4O2UOPIJR26IKAUMINJHXKZRYIERFNIU3SHDQHQV4KDCN5634UVPX5LLU'
       },
       collection: {},
       keyWords: [],
