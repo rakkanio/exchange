@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import indexRouter from './routes/index'
 import cors from 'cors'
 import bodyParser from 'body-parser'
+import { promises as fs } from 'fs'
 // import  multer  from  'multer'
 // const forms = multer({ dest: 'uploads/' })
 dotenv.config()
@@ -28,11 +29,11 @@ const __dirname = path.resolve()
 
 const app = express()
 
-app.use(bodyParser.json({ limit: '5mb' }))
-app.use(bodyParser.urlencoded({ extended: true, limit: '5mb' }))
+app.use(bodyParser.json({ limit: '10mb' }))
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }))
 app.use(express.json({limit: '50mb'}))
 // app.use(forms.single('file')) 
-app.use(express.urlencoded({ extended: true, limit: '5mb' }))
+app.use(express.urlencoded({ extended: true, limit: '10mb' }))
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.static(path.join(__dirname, 'assets')))
 

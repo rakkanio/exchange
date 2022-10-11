@@ -44,6 +44,8 @@ export class UploaderComponent implements OnInit {
           self.notify.showSuccess("Data uploaded successfully", "Success")
           setTimeout(() => { self.spinner.hide() }, 1000)
           console.log('success', event);
+        },error=>{
+          setTimeout(() => { self.spinner.hide() }, 1000)
         });
   }
 

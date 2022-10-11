@@ -20,27 +20,28 @@ const saveDetails = async (attr) => {
         let fileName = `${id}/${file.fileName}`
         const base64 = file.base64.replace(/^data:image\/png;base64,/, '')
         await mkdirp(`assets/${id}`)
+        const dirPath = `./assets/${fileName}`
         const data = await fs.writeFile(`assets/${fileName}`, base64, 'base64')
-        const filePath = path.join(path.resolve(), path.join(`assets`))
-        const fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
-        let cidHash = String(fileHash.cid)
+        // const filePath = path.join(path.resolve(), path.join(`assets`))
+        const fileHash = await uploadFileToIPFS({dirPath})
+        // const fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
         let metadata = METADATA
-        metadata.image = `ipfs://${cidHash}`
+        metadata.image = `ipfs://${fileHash}`
+        metadata.image_integrity= fileHash
         const metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
-        console.log({fileHash: cidHash, metaHash: String(metaHash.cid)})
         const newItem = {
             id,
             collectionName,
-            fileHash: cidHash,
+            fileHash,
             fileName,
             description,
             title,
-            metaHash: String(metaHash.cid),
+            metaHash,
             metadata
         }
         const results = await db.collection('userCollections').insertOne(newItem)
 
-        return { ...data, ...results, ...{ fileHash: cidHash, metaHash: String(metaHash.cid) } }
+        return { ...data, ...results, ...{ fileHash, metaHash } }
     } catch (err) {
         console.log('Error while creating entry', err)
         throw err
@@ -109,7 +110,11 @@ const mergeImagesToUpload = async (attr) => {
         const dir = await fs.readdir(`assets/${id}`)
         const fileName = `${newiItemId}/${originalname}`
         await mkdirp(`assets/${newiItemId}`)
-        const data = await fs.writeFile(`assets/${fileName}`, buffer, 'buffer')
+        const dirPath = `./assets/${newiItemId}`
+        // const data = await fs.writeFile(`assets/${fileName}`, buffer, 'buffer')
+        
+        const basefileName = await sharp(buffer).toFile(`assets/${fileName}`)
+
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
         const mergedFileName = `${id}/merged_${randomNumber}.png`
 
@@ -121,11 +126,13 @@ const mergeImagesToUpload = async (attr) => {
         const itemResult = await db.collection('userCollections').findOne({ id: id })
 
         const filePath = path.join(path.resolve(), path.join(`assets`))
+        // let fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
+        // let fileCidHash = String(fileHash.cid)
 
-        let fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
-        let fileCidHash = String(fileHash.cid)
+        let fileHash = await uploadFileToIPFS({dirPath: `./assets/${fileName}`})
         let metadata = METADATA
-        metadata.image = `ipfs://${fileCidHash}`
+        metadata.image = `ipfs://${fileHash}`
+        metadata.image_integrity= fileHash
         let metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
 
         const newItemObj = {
@@ -133,30 +140,30 @@ const mergeImagesToUpload = async (attr) => {
             title: title,
             description: description,
             fileName,
-            fileHash: fileCidHash,
+            fileHash,
             metadata,
             metaHash,
             collectionName: itemResult.collectionName
         }
         const newItemresults = await db.collection('userCollections').insertOne(newItemObj)
 
-        fileHash = await uploadFileToIPFS({ mergedFileName, filePath: `${filePath}/${mergedFileName}` })
-        fileCidHash = String(fileHash.cid)
+        fileHash = await uploadFileToIPFS({ dirPath:`./assets/${mergedFileName}`, filePath: `${filePath}/${mergedFileName}` })
         metadata = METADATA
-        metadata.image = `ipfs://${fileCidHash}`
+        metadata.image = `ipfs://${fileHash}`
+        metadata.image_integrity= fileHash
         metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
 
         if (itemResult.mergedItem) {
             itemResult.mergedItem.push({
-                fileHash: fileCidHash,
-                metaHash: String(metaHash.cid),
+                fileHash,
+                metaHash,
                 metadata,
                 fileName: mergedFileName
             })
         } else {
             itemResult.mergedItem = [{
-                fileHash: fileCidHash,
-                metaHash: String(metaHash.cid),
+                fileHash,
+                metaHash,
                 metadata,
                 fileName: mergedFileName
             }]
@@ -164,7 +171,7 @@ const mergeImagesToUpload = async (attr) => {
         const results = await db.collection('userCollections').updateOne({ id: id }, { $set: { 'mergedItem': itemResult.mergedItem } })
         console.log(imgURL)
 
-        return { mergeResponse, imgURL, fileHash: String(fileHash.cid), metaHash: String(metaHash.cid) }
+        return { mergeResponse, imgURL, fileHash, metaHash }
     } catch (err) {
         console.log(err)
         throw { error: err.message || err }
