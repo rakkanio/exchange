@@ -3,6 +3,7 @@ import path from 'path'
 import { v4 as uuidv4 } from 'uuid'
 import mkdirp from 'mkdirp'
 import sharp from 'sharp'
+import crypto from 'crypto'
 
 import IPFSModel from './IpfsClient'
 import IPFS_METADATA from '../constants/IPFS_METADATA'
@@ -22,12 +23,15 @@ const saveDetails = async (attr) => {
         await mkdirp(`assets/${id}`)
         const dirPath = `./assets/${fileName}`
         const data = await fs.writeFile(`assets/${fileName}`, base64, 'base64')
+        const fileBuffer = await fs.readFile(`assets/${fileName}`)
+        const hash = crypto.createHash('sha256')
+        const finalHex = hash.update(fileBuffer).digest('base64')
         // const filePath = path.join(path.resolve(), path.join(`assets`))
-        const fileHash = await uploadFileToIPFS({dirPath})
+        const fileHash = await uploadFileToIPFS({ dirPath })
         // const fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
         let metadata = METADATA
         metadata.image = `ipfs://${fileHash}`
-        metadata.image_integrity= fileHash
+        metadata.image_integrity = finalHex
         const metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
         const newItem = {
             id,
@@ -105,14 +109,13 @@ const mergeImagesToUpload = async (attr) => {
             position = JSON.parse(position)
         }
         const { top, left } = position
-        console.log(attr)
         const newiItemId = uuidv4()
         const dir = await fs.readdir(`assets/${id}`)
         const fileName = `${newiItemId}/${originalname}`
         await mkdirp(`assets/${newiItemId}`)
         const dirPath = `./assets/${newiItemId}`
         // const data = await fs.writeFile(`assets/${fileName}`, buffer, 'buffer')
-        
+
         const basefileName = await sharp(buffer).toFile(`assets/${fileName}`)
 
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
@@ -129,10 +132,15 @@ const mergeImagesToUpload = async (attr) => {
         // let fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
         // let fileCidHash = String(fileHash.cid)
 
-        let fileHash = await uploadFileToIPFS({dirPath: `./assets/${fileName}`})
+        let fileHash = await uploadFileToIPFS({ dirPath: `./assets/${fileName}` })
+        
+        let fileBuffer = await fs.readFile(`assets/${fileName}`)
+        let hash = crypto.createHash('sha256')
+        let finalHex = hash.update(fileBuffer).digest('base64')
+
         let metadata = METADATA
         metadata.image = `ipfs://${fileHash}`
-        metadata.image_integrity= fileHash
+        metadata.image_integrity = finalHex
         let metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
 
         const newItemObj = {
@@ -147,10 +155,13 @@ const mergeImagesToUpload = async (attr) => {
         }
         const newItemresults = await db.collection('userCollections').insertOne(newItemObj)
 
-        fileHash = await uploadFileToIPFS({ dirPath:`./assets/${mergedFileName}`, filePath: `${filePath}/${mergedFileName}` })
+        fileHash = await uploadFileToIPFS({ dirPath: `./assets/${mergedFileName}`})
+        fileBuffer = await fs.readFile(`./assets/${mergedFileName}`)
+        hash = crypto.createHash('sha256')
+        finalHex = hash.update(fileBuffer).digest('base64')
         metadata = METADATA
         metadata.image = `ipfs://${fileHash}`
-        metadata.image_integrity= fileHash
+        metadata.image_integrity = finalHex
         metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
 
         if (itemResult.mergedItem) {
