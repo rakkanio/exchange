@@ -31,7 +31,7 @@ const saveDetails = async (attr) => {
         // const fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
         let metadata = METADATA
         metadata.image = `ipfs://${fileHash}`
-        metadata.image_integrity = finalHex
+        metadata.image_integrity = `sha256-${finalHex}`
         const metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
         const newItem = {
             id,
@@ -140,7 +140,7 @@ const mergeImagesToUpload = async (attr) => {
 
         let metadata = METADATA
         metadata.image = `ipfs://${fileHash}`
-        metadata.image_integrity = finalHex
+        metadata.image_integrity = `sha256-${finalHex}`
         let metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
 
         const newItemObj = {
@@ -161,7 +161,7 @@ const mergeImagesToUpload = async (attr) => {
         finalHex = hash.update(fileBuffer).digest('base64')
         metadata = METADATA
         metadata.image = `ipfs://${fileHash}`
-        metadata.image_integrity = finalHex
+        metadata.image_integrity = `sha256-${finalHex}`
         metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
 
         if (itemResult.mergedItem) {
