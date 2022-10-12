@@ -5,8 +5,8 @@ const METADATA={
     image: '',
     image_integrity: 'sha256-YTeQD0RINm8Vg6U/Gl+1IAoBNJl51s0us07nNjOuze8=',
     image_mimetype: 'image/png',
-    unitName: 'RKKN00T1',
-    assetName: 'Rakkan Test 1',
+    unitName: 'NKKR00T1',
+    assetName: 'Nakkar Test 1',
     properties: {
       creator: {
         name: 'rakkan',
