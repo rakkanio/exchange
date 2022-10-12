@@ -1,5 +1,5 @@
 const METADATA={
-    name: 'Rakkan Test 1',
+    name: 'Nakkar Test 1',
     decimals: 0,
     description: 'Signed card',
     image: '',
@@ -9,12 +9,12 @@ const METADATA={
     assetName: 'Nakkar Test 1',
     properties: {
       creator: {
-        name: 'rakkan',
-        address: 'T4O2UOPIJR26IKAUMINJHXKZRYIERFNIU3SHDQHQV4KDCN5634UVPX5LLU'
+        name: 'nakkar',
+        address: 'DIINYKCSED5MH2HTVKJA4W4DQXIHXOEDUMX5OBKWVO4YTNADFVAGGWYFZY'
       },
       collection: {},
       keyWords: [],
-      publisher: 'rakkan.io',
+      publisher: 'nakkar.io',
       itemListElement: 1,
       numberOfItems: 1,
       arc69: {
