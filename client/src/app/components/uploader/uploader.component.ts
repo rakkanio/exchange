@@ -17,7 +17,7 @@ export class UploaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.fetchCollections()
+    this.fetchCollections();
   }
   upload(event: any) {
     const self = this;
@@ -25,6 +25,7 @@ export class UploaderComponent implements OnInit {
     let ext = event.target.files[0].type.split('/')[1];
     let size = event.target.files[0].size;
     let fileName = event.target.files[0].name;
+    self.files=[];
     let reader = new FileReader();
     reader.onload = (event: any) => { // called once readAsDataURL is completed
       self.files.push({ base64: event.target.result, ext: ext, size: size, fileName: fileName });
@@ -33,7 +34,7 @@ export class UploaderComponent implements OnInit {
   }
   saveData(form: NgForm) {
     const self = this;
-    setTimeout(() => { self.spinner.show() }, 1000)
+    self.spinner.show();
     console.log(form, self.files);
     const reqObj = form.value;
     reqObj.files = self.files;
@@ -41,23 +42,26 @@ export class UploaderComponent implements OnInit {
     self.httpService.post(reqObj)
       .subscribe(
         (event: any) => {
-          self.notify.showSuccess("Data uploaded successfully", "Success")
-          setTimeout(() => { self.spinner.hide() }, 1000)
+          self.spinner.hide();
+          self.notify.showSuccess("Data uploaded successfully", "Success");
           console.log('success', event);
         },error=>{
-          setTimeout(() => { self.spinner.hide() }, 1000)
+          self.spinner.hide();
+          console.log('Error while uploading image', error);
         });
   }
 
   fetchCollections() {
     const self = this;
-    setTimeout(() => { self.spinner.show() }, 1000)
+    self.spinner.show();
     const reqObj: any = {}
     reqObj.url = 'collection/list';
     self.httpService.get(reqObj)
       .subscribe((event: any) => {
-        setTimeout(() => { self.spinner.hide() }, 1000)
-        self.collections = event.data.results
+        self.spinner.hide();
+        self.collections = event.data.results;
+      }, error=>{
+        self.spinner.hide();
       });
   }
 }

@@ -24,12 +24,15 @@ export class CollectionItemsComponent implements OnInit {
     const reqObj: any = {}
     reqObj.params = { collection: "skulls" }
     reqObj.url = "collection/item/list";
-    setTimeout(() => { self.spinner.show() }, 1000)
+    self.spinner.show();
     self.httpService.get(reqObj)
       .subscribe(
         (event: any) => {
-          setTimeout(() => { self.spinner.hide() }, 1000)
+          self.spinner.hide();
           self.items = event.data.results
+        },error=>{
+          self.spinner.hide();
+          console.log('Error while fetching base item', error);
         });
   }
 

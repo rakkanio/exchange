@@ -46,12 +46,8 @@ app.use('/', indexRouter)
 process.on('unhandledRejection', (reason, promise) => {
 	console.log('Unhandled Rejection at:', promise, 'reason:', reason)
 })
-process.on('uncaughtException', (err, origin) => {
-	fs.writeSync(
-		process.stderr.fd,
-		`Caught exception: ${err}\n` +
-		`Exception origin: ${origin}`
-	)
+process.on('uncaughtException', async(err, origin) => {
+	await fs.write(process.stderr.fd,`Caught exception: ${err}\n` +`Exception origin: ${origin}`)
 })
 export default app
 

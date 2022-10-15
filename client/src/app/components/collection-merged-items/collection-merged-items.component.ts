@@ -25,8 +25,10 @@ export class CollectionMergedItemsComponent implements OnInit {
     self.httpService.get(reqObj)
       .subscribe(
         (event: any) => {
-          setTimeout(() => { self.spinner.hide() }, 1000)
+          self.spinner.hide();
           self.items = event.data.filteredResult
+        }, error=>{
+          self.spinner.hide();
         });
   }
 }

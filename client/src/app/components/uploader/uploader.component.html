@@ -31,7 +31,7 @@
                     </div>
                 </mat-card-content>
                 <mat-card-actions style="text-align: center;">
-                    <button type="submit" [disabled]="!f.valid" class="upload-btn" mat-button>Upload</button>
+                    <button type="submit" [disabled]="!f.valid || !files.length" class="upload-btn" mat-button>Upload</button>
                 </mat-card-actions>
             </form>
         </mat-card>
