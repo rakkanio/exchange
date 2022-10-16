@@ -1,11 +1,19 @@
-.thumbnail {
-    overflow: hidden;
-    border-radius: 6px;
-    box-shadow: 0px 0px 3px 0px;
+.main{
+    margin-right: 10px;
     margin-bottom: 10px;
 }
 .title {
     margin-bottom: 20px;
     font-size: 20px;
     font-weight: 700;
+}
+
+mat-grid-tile{
+    box-shadow: 0px 0px 3px 1px;
+    border-radius: 6px;
+margin: 4px;
+}
+
+mat-grid-list {
+    margin-bottom: 65px;
 }

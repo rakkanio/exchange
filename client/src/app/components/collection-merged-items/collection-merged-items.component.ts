@@ -21,7 +21,7 @@ export class CollectionMergedItemsComponent implements OnInit {
     const reqObj: any = {}
     reqObj.params = { collection: "skulls" }
     reqObj.url = "collection/merged/item/list";
-    setTimeout(() => { self.spinner.show() }, 1000)
+    self.spinner.show();
     self.httpService.get(reqObj)
       .subscribe(
         (event: any) => {

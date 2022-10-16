@@ -2,17 +2,15 @@
     <div class="row title">
         <span>Art</span>
     </div>
-    <div class="row gal">
-        <div class="col-md-2" *ngFor="let item of items; let i = index">
-            <div class="thumbnail">
+    <div class="row">
+        <mat-grid-list cols="6" rowHeight="2:2" [gutterSize]="'20px'">
+            <mat-grid-tile *ngFor="let item of items; let i = index">
                 <a href="{{imageURL}}/{{item.fileName}}" target="_blank">
-                    <img src="{{imageURL}}/{{item.fileName}}" alt="Lights" style="width:100%">
-                    <div class="caption">
-                        <p>{{item.title}}</p>
-                    </div>
+                    <img src="{{imageURL}}/{{item.fileName}}" alt="Lights">
                 </a>
-            </div>
-        </div>
+                <mat-grid-tile-footer>USDC</mat-grid-tile-footer>
+            </mat-grid-tile>
+        </mat-grid-list>
     </div>
 </div>
 
