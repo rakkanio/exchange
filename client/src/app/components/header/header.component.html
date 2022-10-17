@@ -30,7 +30,7 @@
               <a class="nav-link active" routerLink="/collections/mergeditem">Items</a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item" *ngIf="showUpload">
               <a class="nav-link active" routerLink="/collections/item/upload">Collections</a>
             </li>
             <li class="nav-item connect" *ngIf="!isAuth" (click)="openConnectDialog()">

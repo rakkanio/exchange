@@ -17,7 +17,7 @@ export class HttpService {
       errorMessage = `Error: ${error.error.message}`;
     } else {
       // Server-side errors
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error?.error?.message ||  error.message}`;
     }
     console.log(errorMessage);
     return throwError(errorMessage);

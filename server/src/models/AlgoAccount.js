@@ -1,9 +1,11 @@
 'use strict'
 
 import axios from 'axios'
+import UserModel from './User'
+const { findUser } = UserModel
 
 const fetchAccount = async (attr) => {
-    let account;
+    let account
     try {
         const options = {
             method: 'GET',
@@ -19,7 +21,9 @@ const fetchAccount = async (attr) => {
             if (!asset) {
                 return { error: true, message: `You don't have enough USDC, please add.` }
             } else {
-                return { amount: String(Number(asset.amount / 1000000).toFixed(2)) }
+                const queryObj = { query: { account: attr.account } }
+                const user = await findUser(queryObj)
+                return { amount: String(Number(asset.amount / 1000000).toFixed(2)), showUpload: user?.result?.isAdmin || false }
             }
         }
     } catch (err) {

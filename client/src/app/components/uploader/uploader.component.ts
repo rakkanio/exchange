@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { HttpService } from 'src/app/services/http.service';
 import { NgxSpinnerService } from "ngx-spinner";
 import { NotificationService } from 'src/app/services/notification.service';
+import { CacheService } from 'src/app/services/cache.service';
 
 @Component({
   selector: 'app-uploader',
@@ -13,7 +14,7 @@ export class UploaderComponent implements OnInit {
   public files: any = [];
   public collections: any = []
   constructor(private httpService: HttpService,
-    private spinner: NgxSpinnerService, private notify: NotificationService) {
+    private spinner: NgxSpinnerService, private notify: NotificationService, private cacheService : CacheService) {
   }
 
   ngOnInit(): void {
@@ -34,11 +35,13 @@ export class UploaderComponent implements OnInit {
   }
   saveData(form: NgForm) {
     const self = this;
+    const account = this.cacheService.get('walletAddress');
     self.spinner.show();
     console.log(form, self.files);
     const reqObj = form.value;
     reqObj.files = self.files;
     reqObj.url = 'collection/create';
+    reqObj.account= account;
     self.httpService.post(reqObj)
       .subscribe(
         (event: any) => {
@@ -47,6 +50,7 @@ export class UploaderComponent implements OnInit {
           console.log('success', event);
         },error=>{
           self.spinner.hide();
+          self.notify.showError(error.error || error, "Error");
           console.log('Error while uploading image', error);
         });
   }

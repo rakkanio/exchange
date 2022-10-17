@@ -8,6 +8,7 @@ export class EmmiterService {
   public isAuth: any;
   public account: any;
   public accountInfo: any;
+  public upload: any;
   constructor() {
     this.isAuth = false;
     this.account = [];
@@ -16,6 +17,7 @@ export class EmmiterService {
   public authStateChange: Subject<string> = new Subject<string>();
   public WalletConnectStateChange: Subject<string> = new Subject<string>();
   public accountInfoChange: Subject<string> = new Subject<string>();
+  public uploadChange: Subject<string> = new Subject<string>();
 
   setAuth(flag: Boolean) {
     this.isAuth = flag === true ? false : true;
@@ -28,5 +30,9 @@ export class EmmiterService {
   setAccountInfo(account) {
     this.accountInfo = account;
     this.accountInfoChange.next(this.accountInfo);
+  }
+  setAdminRole(upload) {
+    this.upload = upload;
+    this.uploadChange.next(this.upload);
   }
 }
