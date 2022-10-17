@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from 'src/app/services/auth.service';
 import { CacheService } from 'src/app/services/cache.service';
 import { EmmiterService } from 'src/app/services/emmiter.service';
 import { ConnectDialogComponent } from '../home/connect/connect-dialog.component';
@@ -16,7 +17,10 @@ export class HeaderComponent implements OnInit {
   public _authSubscription: any = null;
   public _accountInfoSubscription: any = null;
   public _uploadSubscription: any = null;
-  constructor(private cacheService: CacheService, private event: EmmiterService,private dialog: MatDialog) {
+  constructor(private cacheService: CacheService,
+    private event: EmmiterService,
+    private dialog: MatDialog,
+    private authService: AuthService) {
     this._authSubscription = this.event.authStateChange.subscribe((value) => {
       this.isAuth = !(Boolean(value));
     });
@@ -33,6 +37,7 @@ export class HeaderComponent implements OnInit {
     const active = self.cacheService.get('active');
     if (active === 'true') {
       self.isAuth = true;
+      await self.authService.isLoggedIn();
     } else {
       self.clearInfo();
     }
