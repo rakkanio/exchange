@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AlgoSignerService } from 'src/app/services/algo-signer.service';
 import { CacheService } from 'src/app/services/cache.service';
 import { EmmiterService } from 'src/app/services/emmiter.service';
 import { ConnectDialogComponent } from '../home/connect/connect-dialog.component';
@@ -17,8 +16,7 @@ export class HeaderComponent implements OnInit {
   public _authSubscription: any = null;
   public _accountInfoSubscription: any = null;
   public _uploadSubscription: any = null;
-  constructor(private cacheService: CacheService, private event: EmmiterService,
-    private algoService: AlgoSignerService, private dialog: MatDialog) {
+  constructor(private cacheService: CacheService, private event: EmmiterService,private dialog: MatDialog) {
     this._authSubscription = this.event.authStateChange.subscribe((value) => {
       this.isAuth = !(Boolean(value));
     });
@@ -37,13 +35,6 @@ export class HeaderComponent implements OnInit {
       self.isAuth = true;
     } else {
       self.clearInfo();
-    }
-    const account = this.cacheService.get('walletAddress');
-    if (account !== 'null') {
-      const accountInfo = await self.algoService.getAccountInfo(account);
-      self.event.setAccountInfo(accountInfo.data);
-      self.event.setAdminRole(accountInfo.data.showUpload);
-
     }
   }
   disconnect() {

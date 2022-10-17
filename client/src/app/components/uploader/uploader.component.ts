@@ -14,12 +14,15 @@ export class UploaderComponent implements OnInit {
   public files: any = [];
   public collections: any = []
   constructor(private httpService: HttpService,
-    private spinner: NgxSpinnerService, private notify: NotificationService, private cacheService : CacheService) {
+    private spinner: NgxSpinnerService,
+    private notify: NotificationService,
+    private cacheService : CacheService) {
   }
 
   ngOnInit(): void {
     this.fetchCollections();
   }
+
   upload(event: any) {
     const self = this;
     console.log(event.target.files[0], event.target.result);
