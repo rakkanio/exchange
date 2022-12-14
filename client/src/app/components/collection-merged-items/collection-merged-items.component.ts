@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CacheService } from 'src/app/services/cache.service';
 import { HttpService } from 'src/app/services/http.service';
 import { environment } from 'src/environments/environment';
 
@@ -11,7 +13,7 @@ import { environment } from 'src/environments/environment';
 export class CollectionMergedItemsComponent implements OnInit {
   public items: any = [];
   public imageURL = environment.assetUrl
-  constructor(private httpService: HttpService, private spinner: NgxSpinnerService) { }
+  constructor(private httpService: HttpService, private spinner: NgxSpinnerService, private router: Router, private cacheService: CacheService) { }
 
   ngOnInit(): void {
     this.fetchItemList()
@@ -30,5 +32,8 @@ export class CollectionMergedItemsComponent implements OnInit {
         }, error=>{
           self.spinner.hide();
         });
+  }
+  gotToDetails(item){
+    this.router.navigate(["collections/item/details", item._id]);
   }
 }

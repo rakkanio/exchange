@@ -6,6 +6,7 @@ import { CollectionMergedItemsComponent } from './components/collection-merged-i
 import { CollectionsComponent } from './components/collections/collections.component';
 import { ConnectDialogComponent } from './components/home/connect/connect-dialog.component';
 import { HomeComponent } from './components/home/home.component';
+import { ItemDetailsComponent } from './components/item-details/item-details.component';
 import { UploaderComponent } from './components/uploader/uploader.component';
 import { AuthGuard } from './services/auth.guard';
 
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'collections', component: CollectionsComponent },
   { path: 'collections/items', component: CollectionItemsComponent },
+  { path: 'collections/item/details/:id', component: ItemDetailsComponent },
   { path: 'collections/mergeditem', component: CollectionMergedItemsComponent },
   { path: 'collections/item/upload', component: UploaderComponent, canActivate: [AuthGuard] }
 ];

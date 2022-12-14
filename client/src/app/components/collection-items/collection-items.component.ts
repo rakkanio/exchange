@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
 import { HttpService } from 'src/app/services/http.service';
 import { environment } from 'src/environments/environment';
@@ -13,7 +14,7 @@ export class CollectionItemsComponent implements OnInit {
   public items: any = [];
   public imageURL = environment.assetUrl
 
-  constructor(private httpService: HttpService, private spinner: NgxSpinnerService) { }
+  constructor(private httpService: HttpService, private spinner: NgxSpinnerService, private router: Router) { }
 
   ngOnInit(): void {
     this.fetchItemList()
@@ -35,5 +36,7 @@ export class CollectionItemsComponent implements OnInit {
           console.log('Error while fetching base item', error);
         });
   }
-
+  gotToDetails(item){
+    this.router.navigate(["collections/item/details", item._id]);
+  }
 }

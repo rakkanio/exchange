@@ -21,6 +21,7 @@ import { MyAlgoService } from './services/my-algo.service';
 import { HttpService } from './services/http.service';
 import { CacheService } from './services/cache.service';
 import { CollectionMergedItemsComponent } from './components/collection-merged-items/collection-merged-items.component';
+import { ItemDetailsComponent } from './components/item-details/item-details.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { CollectionMergedItemsComponent } from './components/collection-merged-i
     CollectionsComponent,
     CollectionItemsComponent,
     UploaderComponent,
-    CollectionMergedItemsComponent
+    CollectionMergedItemsComponent,
+    ItemDetailsComponent
   ],
   imports: [
     BrowserModule,

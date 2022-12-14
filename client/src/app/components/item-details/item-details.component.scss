@@ -1,0 +1,19 @@
+.col {
+    text-align: center;
+}
+
+.offer-btn {
+    position: relative;
+    top: 15px;
+    background-color: black;
+    color: #fff;
+    padding: 5px 30px 5px 30px;
+    border-radius: 25px;
+    font-size: 14px;
+    width: 200px;
+}
+.details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

@@ -38,6 +38,9 @@ export class HandlerService {
       await self.algoSignerService.check();
       await self.algoSignerService.connect();
       const account = await self.algoSignerService.getAccounts();
+      if (!account.length) {
+        throw { message: 'No account found on selected network' };
+      }
       const stateObj = {
         account: account[0]['address'],
         walletType: environment.WALLET_TYPE.ALGO_SIGNER
@@ -58,6 +61,9 @@ export class HandlerService {
     try {
       const self = this;
       const account = await self.myAlgoService.connect();
+      if (!account.length) {
+        throw { message: 'No account found on selected network' };
+      }
       const stateObj = {
         account: account[0]['address'],
         walletType: environment.WALLET_TYPE.MY_ALGO_WALLET
@@ -80,6 +86,9 @@ export class HandlerService {
       const self = this;
       await self.walletConnectService.connect();
       self._walletConnectSubscription = this.event.WalletConnectStateChange.subscribe((account: any) => {
+        if (!account.length) {
+          throw { message: 'No account found on selected network' };
+        }
         const stateObj = {
           account: account[0],
           walletType: environment.WALLET_TYPE.WALLET_CONNECT
