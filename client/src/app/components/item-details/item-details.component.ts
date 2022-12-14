@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CacheService } from 'src/app/services/cache.service';
 import { HttpService } from 'src/app/services/http.service';
 import { environment } from 'src/environments/environment';
 
@@ -13,13 +14,15 @@ export class ItemDetailsComponent implements OnInit {
   public detailsData:any={};
   public imageURL= environment.assetUrl
 
-  constructor(private route: ActivatedRoute, private spinner: NgxSpinnerService, private httpService: HttpService) { }
+  constructor(private route: ActivatedRoute, private spinner: NgxSpinnerService, private httpService: HttpService,
+    private cacheService: CacheService) { }
 
   ngOnInit(): void {
     const self=this;
-      this.route.params.subscribe((params: Params) => {
-        self.fetchDetails(params['id'] )
-      })
+    self.detailsData= JSON.parse(self.cacheService.get('item'))
+      // this.route.params.subscribe((params: Params) => {
+      //   self.fetchDetails(params['id'] )
+      // })
   }
   fetchDetails(id){
     const self = this;

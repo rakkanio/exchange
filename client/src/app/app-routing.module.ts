@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'collections', component: CollectionsComponent },
   { path: 'collections/items', component: CollectionItemsComponent },
-  { path: 'collections/item/details/:id', component: ItemDetailsComponent },
+  { path: 'collections/item/details', component: ItemDetailsComponent },
   { path: 'collections/mergeditem', component: CollectionMergedItemsComponent },
   { path: 'collections/item/upload', component: UploaderComponent, canActivate: [AuthGuard] }
 ];

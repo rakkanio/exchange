@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from "ngx-spinner";
+import { CacheService } from 'src/app/services/cache.service';
 import { HttpService } from 'src/app/services/http.service';
 import { environment } from 'src/environments/environment';
 
@@ -14,7 +15,7 @@ export class CollectionItemsComponent implements OnInit {
   public items: any = [];
   public imageURL = environment.assetUrl
 
-  constructor(private httpService: HttpService, private spinner: NgxSpinnerService, private router: Router) { }
+  constructor(private httpService: HttpService, private spinner: NgxSpinnerService, private router: Router, private cacheService: CacheService) { }
 
   ngOnInit(): void {
     this.fetchItemList()
@@ -37,6 +38,7 @@ export class CollectionItemsComponent implements OnInit {
         });
   }
   gotToDetails(item){
-    this.router.navigate(["collections/item/details", item.id]);
+    this.cacheService.set('item', JSON.stringify(item))
+    this.router.navigate(["collections/item/details"]);
   }
 }

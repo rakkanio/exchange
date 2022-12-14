@@ -1,8 +1,8 @@
 <div class="block container">
     <div class="row">
       <div class="col">
-        <img *ngIf="detailsData.mergedItem" src="{{imageURL}}/{{detailsData.mergedItem.fileName}}" alt="notfound_img" height="350px">
-        <img *ngIf="!detailsData.mergedItem" src="{{imageURL}}/{{detailsData.fileName}}" alt="notfound_img" height="350px">
+        <img src="{{detailsData.imgURL}}" alt="notfound_img" height="350px">
+        <!-- <img *ngIf="!detailsData.mergedItem" src="{{imageURL}}/{{detailsData.fileName}}" alt="notfound_img" height="350px"> -->
       </div>
       <div class="col details">
         <div>
