@@ -99,10 +99,12 @@ const mergedListCollectionItems = async (attr) => {
             .map(item => {
                 if (item.mergedItem.length) {
                     item.mergedItem.id=item.id
-                    filteredResult = filteredResult.concat(item.mergedItem)
+                    filteredResult = [...filteredResult, ...item.mergedItem]
+                    // filteredResult = filteredResult.concat(item.mergedItem)
                 } else {
                     item.mergedItem.id=item.id
-                    filteredResult = filteredResult.concat([item.mergedItem])
+                    filteredResult = [...filteredResult, ...[item.mergedItem]]
+                    // filteredResult = filteredResult.concat([item.mergedItem])
                 }
                 //   filteredResult.push(results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`)  
             })
