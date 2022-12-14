@@ -6,7 +6,7 @@
         <mat-grid-list cols="6" rowHeight="2:2" [gutterSize]="'20px'">
             <mat-grid-tile *ngFor="let item of items; let i = index">
                 <a (click)="gotToDetails(item)">
-                    <img src="{{imageURL}}/{{item.fileName}}" alt="Lights">
+                    <img src="{{imageURL}}/{{item.mergedItem.fileName}}" alt="Lights">
                 </a>
                 <mat-grid-tile-footer>USDC</mat-grid-tile-footer>
             </mat-grid-tile>

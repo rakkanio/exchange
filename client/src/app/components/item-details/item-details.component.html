@@ -1,14 +1,15 @@
 <div class="block container">
     <div class="row">
       <div class="col">
-        <img src="{{imageURL}}/{{detailsData.mergedItem.fileName}}" alt="notfound_img" height="350px">
+        <img *ngIf="detailsData.mergedItem" src="{{imageURL}}/{{detailsData.mergedItem.fileName}}" alt="notfound_img" height="350px">
+        <img *ngIf="!detailsData.mergedItem" src="{{imageURL}}/{{detailsData.fileName}}" alt="notfound_img" height="350px">
       </div>
       <div class="col details">
         <div>
             <p>Title text</p>
         </div>
         <div>
-            <a class="offer-btn" mat-raised-button>Offer</a>
+            <a class="offer-btn" mat-raised-button>Buy Offer</a>
         </div>
       </div>
     </div>

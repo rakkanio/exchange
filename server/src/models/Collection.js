@@ -96,23 +96,23 @@ const mergedListCollectionItems = async (attr) => {
         let filteredResult = [];
         let results = await db.collection('userCollections').find({ 'collectionName.value': collection }).toArray()
         results = results.filter((item) => item.mergedItem !== undefined)
-            .map(item => {
-                if (item.mergedItem.length) {
-                    item.mergedItem.id=item.id
-                    filteredResult = [...filteredResult, ...item.mergedItem]
-                    // filteredResult = filteredResult.concat(item.mergedItem)
-                } else {
-                    item.mergedItem.id=item.id
-                    filteredResult = [...filteredResult, ...[item.mergedItem]]
-                    // filteredResult = filteredResult.concat([item.mergedItem])
-                }
-                //   filteredResult.push(results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`)  
-            })
-        for (let index = 0; index < filteredResult.length; index++) {
-            filteredResult[index]['imgURL'] = `${process.env.SELF_SERVICE}/${filteredResult[index].fileName}`
-            filteredResult[index]['id'] = filteredResult[index].id
+            // .map(item => {
+            //     if (item.mergedItem.length) {
+            //         item.mergedItem.id=item.id
+            //         filteredResult = [...filteredResult, ...item.mergedItem]
+            //         // filteredResult = filteredResult.concat(item.mergedItem)
+            //     } else {
+            //         item.mergedItem.id=item.id
+            //         filteredResult = [...filteredResult, ...[item.mergedItem]]
+            //         // filteredResult = filteredResult.concat([item.mergedItem])
+            //     }
+            //     //   filteredResult.push(results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`)  
+            // })
+        for (let index = 0; index < results.length; index++) {
+            results[index]['imgURL'] = `${process.env.SELF_SERVICE}/${results[index].fileName}`
+            // filteredResult[index]['id'] = filteredResult[index].id
         }
-        return { filteredResult }
+        return { filteredResult:results }
     } catch (err) {
         throw err
     }
