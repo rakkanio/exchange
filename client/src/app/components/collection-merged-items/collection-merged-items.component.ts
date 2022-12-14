@@ -34,6 +34,6 @@ export class CollectionMergedItemsComponent implements OnInit {
         });
   }
   gotToDetails(item){
-    this.router.navigate(["collections/item/details", item._id]);
+    this.router.navigate(["collections/item/details", item.id]);
   }
 }

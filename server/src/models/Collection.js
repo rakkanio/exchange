@@ -4,7 +4,6 @@ import { v4 as uuidv4 } from 'uuid'
 import mkdirp from 'mkdirp'
 import sharp from 'sharp'
 import crypto from 'crypto'
-import { ObjectId } from 'mongodb'
 
 import IPFSModel from './IpfsClient'
 import IPFS_METADATA from '../constants/IPFS_METADATA'
@@ -82,7 +81,7 @@ const listCollectionItems = async (attr) => {
 const collectionItemDetail = async (attr) => {
     try {
         const { id } = attr
-        const result = await db.collection('userCollections').findOne({ '_id': ObjectId(id) })
+        const result = await db.collection('userCollections').findOne({ 'id': id })
         result['imgURL'] = `${process.env.SELF_SERVICE}/${result.fileName}`
 
         return { result }
@@ -99,17 +98,17 @@ const mergedListCollectionItems = async (attr) => {
         results = results.filter((item) => item.mergedItem !== undefined)
             .map(item => {
                 if (item.mergedItem.length) {
-                    item.mergedItem._id=item._id
+                    item.mergedItem.id=item.id
                     filteredResult = filteredResult.concat(item.mergedItem)
                 } else {
-                    item.mergedItem._id=item._id
+                    item.mergedItem.id=item.id
                     filteredResult = filteredResult.concat([item.mergedItem])
                 }
                 //   filteredResult.push(results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`)  
             })
         for (let index = 0; index < filteredResult.length; index++) {
             filteredResult[index]['imgURL'] = `${process.env.SELF_SERVICE}/${filteredResult[index].fileName}`
-            filteredResult[index]['_id'] = filteredResult[index]._id
+            filteredResult[index]['id'] = filteredResult[index].id
         }
         return { filteredResult }
     } catch (err) {
