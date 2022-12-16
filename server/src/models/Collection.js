@@ -22,6 +22,9 @@ const saveDetails = async (attr) => {
         const base64 = file.base64.replace(/^data:image\/png;base64,/, '')
         await mkdirp(`assets/${id}`)
         const dirPath = `./assets/${fileName}`
+        const randomNumber = Math.floor(Math.random() * 90000) + 10000
+        const thumbnailName = `${id}/thumbnail_${randomNumber}.png`
+        const thumbnail= await sharp(buffer).resize(130, 130, {}).toFile(`assets/${thumbnailName}`) 
         const data = await fs.writeFile(`assets/${fileName}`, base64, 'base64')
         const fileBuffer = await fs.readFile(`assets/${fileName}`)
         const hash = crypto.createHash('sha256')
@@ -149,15 +152,11 @@ const mergeImagesToUpload = async (attr) => {
         
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
         const mergedFileName = `${id}/merged_${randomNumber}.png`
-        const thumbnailName = `${id}/thumbnail_${randomNumber}.png`
-        
-       const thumbnail= await sharp(buffer).resize(130, 130, {}).toFile(`assets/${thumbnailName}`)
-
         const mergeResponse = await sharp(`assets/${id}/${dir[0]}`)//.resize(1000, 800)
             .composite([{ input: `assets/${newiItemId}/${originalname}`, top: Number(top), left: Number(left) }]).toFile(`assets/${mergedFileName}`)
 
         const imgURL = `${process.env.SELF_SERVICE}/${mergedFileName}`
-        const thumbnailURL = `${process.env.SELF_SERVICE}/${thumbnailName}`
+        // const thumbnailURL = `${process.env.SELF_SERVICE}/${thumbnailName}`
 
         const itemResult = await db.collection('userCollections').findOne({ id: id })
 
@@ -216,7 +215,7 @@ const mergeImagesToUpload = async (attr) => {
         const results = await db.collection('userCollections').updateOne({ id: id }, { $set: { 'mergedItem': itemResult.mergedItem, thumbnailFile:thumbnailName } })
         console.log(imgURL)
 
-        return { mergeResponse, imgURL,thumbnailURL, fileHash, metaHash }
+        return { mergeResponse, imgURL, fileHash, metaHash }
     } catch (err) {
         console.log(err)
         throw { error: err.message || err }
