@@ -41,7 +41,8 @@ const saveDetails = async (attr) => {
             description,
             title,
             metaHash,
-            metadata
+            metadata,
+            createdAt: new Date().toISOString()
         }
         const results = await db.collection('userCollections').insertOne(newItem)
 
@@ -52,8 +53,16 @@ const saveDetails = async (attr) => {
     }
 }
 
-const listCollections = async () => {
+const listCollections = async (attr) => {
     try {
+        // const {value, name}= attr
+        // const query={}
+        // if(value){
+        //     query['collection']['name']=value
+        // }
+        // if(value){
+        //     query['collection']['value']=value
+        // }
         const results = await db.collection('collections').find().toArray()
         return { results }
     } catch (err) {
@@ -70,6 +79,9 @@ const listCollectionItems = async (attr) => {
             results[index]['imgURL'] = `${process.env.SELF_SERVICE}/${results[index].fileName}`
             if (results[index].mergedItem) {
                 results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`
+            }
+            if(results[index].thumbnailFile){
+                results[index]['thubnailImgURL'] = `${process.env.SELF_SERVICE}/${results[index].thumbnailFile}`
             }
         }
         return { results }
@@ -120,7 +132,7 @@ const mergedListCollectionItems = async (attr) => {
 }
 
 const mergeImagesToUpload = async (attr) => {
-    const { id, originalname, position, buffer, description, title } = attr
+    let { id, originalname, position, buffer, description, title } = attr
     try {
         if (position && (typeof position === 'string')) {
             position = JSON.parse(position)
@@ -134,9 +146,12 @@ const mergeImagesToUpload = async (attr) => {
         // const data = await fs.writeFile(`assets/${fileName}`, buffer, 'buffer')
 
         const basefileName = await sharp(buffer).toFile(`assets/${fileName}`)
-
+        
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
         const mergedFileName = `${id}/merged_${randomNumber}.png`
+        const thumbnailName = `${id}/thumbnail_${randomNumber}.png`
+        
+       const thumbnail= await sharp(buffer).resize(130, 130, {}).toFile(`assets/${thumbnailName}`)
 
         const mergeResponse = await sharp(`assets/${id}/${dir[0]}`)//.resize(1000, 800)
             .composite([{ input: `assets/${newiItemId}/${originalname}`, top: Number(top), left: Number(left) }]).toFile(`assets/${mergedFileName}`)
@@ -149,7 +164,7 @@ const mergeImagesToUpload = async (attr) => {
         // let fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
         // let fileCidHash = String(fileHash.cid)
 
-        let fileHash = await uploadFileToIPFS({ dirPath: `./assets/${fileName}` })
+       let fileHash = await uploadFileToIPFS({ dirPath: `./assets/${fileName}` })
         
         let fileBuffer = await fs.readFile(`assets/${fileName}`)
         let hash = crypto.createHash('sha256')
@@ -168,7 +183,8 @@ const mergeImagesToUpload = async (attr) => {
             fileHash,
             metadata,
             metaHash,
-            collectionName: itemResult.collectionName
+            collectionName: itemResult.collectionName,
+            createdAt: new Date().toISOString()
         }
         const newItemresults = await db.collection('userCollections').insertOne(newItemObj)
 
@@ -196,7 +212,7 @@ const mergeImagesToUpload = async (attr) => {
                 fileName: mergedFileName
             }]
         }
-        const results = await db.collection('userCollections').updateOne({ id: id }, { $set: { 'mergedItem': itemResult.mergedItem } })
+        const results = await db.collection('userCollections').updateOne({ id: id }, { $set: { 'mergedItem': itemResult.mergedItem, thumbnailFile:thumbnailName } })
         console.log(imgURL)
 
         return { mergeResponse, imgURL, fileHash, metaHash }
