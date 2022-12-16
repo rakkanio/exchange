@@ -157,6 +157,7 @@ const mergeImagesToUpload = async (attr) => {
             .composite([{ input: `assets/${newiItemId}/${originalname}`, top: Number(top), left: Number(left) }]).toFile(`assets/${mergedFileName}`)
 
         const imgURL = `${process.env.SELF_SERVICE}/${mergedFileName}`
+        const thumbnailURL = `${process.env.SELF_SERVICE}/${thumbnailName}`
 
         const itemResult = await db.collection('userCollections').findOne({ id: id })
 
@@ -215,7 +216,7 @@ const mergeImagesToUpload = async (attr) => {
         const results = await db.collection('userCollections').updateOne({ id: id }, { $set: { 'mergedItem': itemResult.mergedItem, thumbnailFile:thumbnailName } })
         console.log(imgURL)
 
-        return { mergeResponse, imgURL, fileHash, metaHash }
+        return { mergeResponse, imgURL,thumbnailURL, fileHash, metaHash }
     } catch (err) {
         console.log(err)
         throw { error: err.message || err }
