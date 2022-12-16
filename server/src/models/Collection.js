@@ -24,7 +24,7 @@ const saveDetails = async (attr) => {
         const dirPath = `./assets/${fileName}`
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
         const thumbnailName = `${id}/thumbnail_${randomNumber}.png`
-        const thumbnail= await sharp(buffer).resize(130, 130, {}).toFile(`assets/${thumbnailName}`) 
+        const thumbnail= await sharp(base64).resize(130, 130, {}).toFile(`assets/${thumbnailName}`) 
         const data = await fs.writeFile(`assets/${fileName}`, base64, 'base64')
         const fileBuffer = await fs.readFile(`assets/${fileName}`)
         const hash = crypto.createHash('sha256')
