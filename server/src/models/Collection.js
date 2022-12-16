@@ -19,18 +19,25 @@ const saveDetails = async (attr) => {
         const id = uuidv4()
         const file = files[0]
         let fileName = `${id}/${file.fileName}`
-        const base64 = file.base64.replace(/^data:image\/png;base64,/, '')
+        let base64=''
+        if(file.ext === 'jpeg'){
+          base64  = file.base64.replace(/^data:image\/jpeg;base64,/, '')
+        }
+       else if(file.ext === 'png'){
+        base64  = file.base64.replace(/^data:image\/png;base64,/, '')
+       }
+
         await mkdirp(`assets/${id}`)
         const dirPath = `./assets/${fileName}`
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
-        const thumbnailName = `${id}/thumbnail_${randomNumber}.png`
-        const thumbnail= await sharp(base64).resize(130, 130, {}).toFile(`assets/${thumbnailName}`) 
+        const thumbnailFile = `${id}/thumbnail_${randomNumber}.${file.ext}`
         const data = await fs.writeFile(`assets/${fileName}`, base64, 'base64')
         const fileBuffer = await fs.readFile(`assets/${fileName}`)
         const hash = crypto.createHash('sha256')
+        const thumbnail= await sharp(fileBuffer).resize(130, 130, {}).toFile(`assets/${thumbnailFile}`) 
         const finalHex = hash.update(fileBuffer).digest('base64')
         // const filePath = path.join(path.resolve(), path.join(`assets`))
-        const fileHash = await uploadFileToIPFS({ dirPath })
+         const fileHash = await uploadFileToIPFS({ dirPath })
         // const fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
         let metadata = METADATA
         metadata.image = `ipfs://${fileHash}`
@@ -45,6 +52,7 @@ const saveDetails = async (attr) => {
             title,
             metaHash,
             metadata,
+            thumbnailFile,
             createdAt: new Date().toISOString()
         }
         const results = await db.collection('userCollections').insertOne(newItem)
@@ -212,7 +220,7 @@ const mergeImagesToUpload = async (attr) => {
                 fileName: mergedFileName
             }]
         }
-        const results = await db.collection('userCollections').updateOne({ id: id }, { $set: { 'mergedItem': itemResult.mergedItem, thumbnailFile:thumbnailName } })
+        const results = await db.collection('userCollections').updateOne({ id: id }, { $set: { 'mergedItem': itemResult.mergedItem } })
         console.log(imgURL)
 
         return { mergeResponse, imgURL, fileHash, metaHash }
