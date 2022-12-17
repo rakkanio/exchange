@@ -45,11 +45,12 @@ const saveDetails = async (attr) => {
         metadata.image = `ipfs://${fileHash}`
         metadata.image_integrity = `sha256-${finalHex}`
         const metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
+        console.log({id,thumbnailFile})
         const newItem = {
             id,
             collectionName,
             fileHash,
-            fileName,
+            fileName: `${id}/${fileName}`,
             description,
             title,
             metaHash,
@@ -163,7 +164,7 @@ const mergeImagesToUpload = async (attr) => {
         const fileName = originalname
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
         
-        await mkdirp(mergedDirPath)
+        await mkdirp(`${mergedDirPath}/merged`)
         await mkdirp(newFileDirPath)
         
         let dir = await fs.readdir(canvasDirPath)
