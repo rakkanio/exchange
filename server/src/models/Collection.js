@@ -88,7 +88,7 @@ const listCollections = async (attr) => {
 const listCollectionItems = async (attr) => {
     try {
         const { collection } = attr
-        const results = await db.collection('userCollections').find({ }).toArray()
+        let results = await db.collection('userCollections').find({ }).toArray()
         for (let index = 0; index < results.length; index++) {
             results[index]['imgURL'] = `${process.env.SELF_SERVICE}/${results[index].fileName}`
             if (results[index].mergedItem) {
@@ -98,6 +98,7 @@ const listCollectionItems = async (attr) => {
                 results[index]['thubnailImgURL'] = `${process.env.SELF_SERVICE}/${results[index].thumbnailFile}`
             }
         }
+        results = results.filter(item=> item.thubnailImgURL)
         return { results }
     } catch (err) {
         throw err
