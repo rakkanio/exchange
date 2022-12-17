@@ -18,7 +18,6 @@ const saveDetails = async (attr) => {
         const { files, title, description, collectionName } = attr
         const id = uuidv4()
         const canvasDir = `assets/${id}`
-        const thumbnailDir = `${canvasDir}/thumbnail`
         const file = files[0]
         let fileName = `${file.fileName}`
         let base64=''
@@ -30,14 +29,14 @@ const saveDetails = async (attr) => {
        }
 
         await mkdirp(canvasDir)
-        await mkdirp(thumbnailDir)
+        await mkdirp(`${canvasDir}/thumbnail`)
         const dirPath = `${canvasDir}/${fileName}`
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
-        const thumbnailFile = `thumbnail_${randomNumber}.${file.ext}`
+        const thumbnailFile = `${id}/thumbnail/thumbnail_${randomNumber}.${file.ext}`
         const data = await fs.writeFile(`${canvasDir}/${fileName}`, base64, 'base64')
         const fileBuffer = await fs.readFile(`${canvasDir}/${fileName}`)
         const hash = crypto.createHash('sha256')
-        const thumbnail= await sharp(fileBuffer).resize(130, 130, {}).toFile(`${thumbnailDir}/${thumbnailFile}`) 
+        const thumbnail= await sharp(fileBuffer).resize(130, 130, {}).toFile(`assets/${thumbnailFile}`) 
         const finalHex = hash.update(fileBuffer).digest('base64')
         // const filePath = path.join(path.resolve(), path.join(`assets`))
          const fileHash = await uploadFileToIPFS({ dirPath })
@@ -88,7 +87,7 @@ const listCollections = async (attr) => {
 const listCollectionItems = async (attr) => {
     try {
         const { collection } = attr
-        const results = await db.collection('userCollections').find({ 'collectionName.value': collection }).toArray()
+        const results = await db.collection('userCollections').find({ }).toArray()
         for (let index = 0; index < results.length; index++) {
             results[index]['imgURL'] = `${process.env.SELF_SERVICE}/${results[index].fileName}`
             if (results[index].mergedItem) {
@@ -120,7 +119,7 @@ const mergedListCollectionItems = async (attr) => {
     try {
         const { collection } = attr
         let filteredResult = [];
-        let results = await db.collection('userCollections').find({ 'collectionName.value': collection }).toArray()
+        let results = await db.collection('userCollections').find({ }).toArray()
         results = results.filter((item) => item.mergedItem !== undefined)
             .map(item => {
                 if (item.mergedItem.length) {
@@ -135,6 +134,7 @@ const mergedListCollectionItems = async (attr) => {
                 //   filteredResult.push(results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`)  
             })
         for (let index = 0; index < filteredResult.length; index++) {
+            console.log(`${process.env.SELF_SERVICE}/${filteredResult[index].fileName}`)
             filteredResult[index]['imgURL'] = `${process.env.SELF_SERVICE}/${filteredResult[index].fileName}`
             filteredResult[index]['id'] = filteredResult[index].id
         }
@@ -156,7 +156,8 @@ const mergeImagesToUpload = async (attr) => {
         // }
         // const { top = 0, left= 0 } = position
         const newiItemId = uuidv4()
-        const mergedDirPath = `./assets/${id}/merged`
+        const mergedDirPath = `./assets/${id}`
+        const mergedPath = `${id}/merged`
         const canvasDirPath = `assets/${id}`
         const newFileDirPath = `assets/${newiItemId}`
         const fileName = originalname
@@ -171,12 +172,12 @@ const mergeImagesToUpload = async (attr) => {
         
         await sharp(buffer).rotate(270).toFile(`${newFileDirPath}/${fileName}`)
         
-        const mergedFileName = `merged_${randomNumber}.${mimetype.split('/')[1]}`
+        const mergedFileName = `/merged_${randomNumber}.${mimetype.split('/')[1]}`
         const mergeResponse = await sharp(`${canvasDirPath}/${dir[0]}`)//.resize(1000, 800)
             .composite([{ input: `${newFileDirPath}/${fileName}`, top: top, left: left }])
-            .toFile(`${mergedDirPath}/${mergedFileName}`)
+            .toFile(`assets/${mergedPath}${mergedFileName}`)
 
-        const mergedImgURL = `${process.env.SELF_SERVICE}/${id}/merged/${mergedFileName}`
+        const mergedImgURL = `${process.env.SELF_SERVICE}/${mergedPath}${mergedFileName}`
         // const thumbnailURL = `${process.env.SELF_SERVICE}/${thumbnailName}`
 
         const itemResult = await db.collection('userCollections').findOne({ id: id })
@@ -223,14 +224,14 @@ const mergeImagesToUpload = async (attr) => {
                 mergedFileHash,
                 metaHash,
                 metadata,
-                fileName: mergedFileName
+                fileName: `${mergedPath}${mergedFileName}`
             })
         } else {
             itemResult.mergedItem = [{
                 mergedFileHash,
                 metaHash,
                 metadata,
-                fileName: mergedFileName
+                fileName:  `${mergedPath}${mergedFileName}`
             }]
         }
         const results = await db.collection('userCollections').updateOne({ id: id }, { $set: { 'mergedItem': itemResult.mergedItem } })
