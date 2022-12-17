@@ -17,8 +17,10 @@ const saveDetails = async (attr) => {
     try {
         const { files, title, description, collectionName } = attr
         const id = uuidv4()
+        const canvasDir = `assets/${id}`
+        const thumbnailDir = `${canvasDir}/thumbnail`
         const file = files[0]
-        let fileName = `${id}/${file.fileName}`
+        let fileName = `${file.fileName}`
         let base64=''
         if(file.ext === 'jpeg'){
           base64  = file.base64.replace(/^data:image\/jpeg;base64,/, '')
@@ -27,14 +29,15 @@ const saveDetails = async (attr) => {
         base64  = file.base64.replace(/^data:image\/png;base64,/, '')
        }
 
-        await mkdirp(`assets/${id}`)
-        const dirPath = `./assets/${fileName}`
+        await mkdirp(canvasDir)
+        await mkdirp(thumbnailDir)
+        const dirPath = `${canvasDir}/${fileName}`
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
-        const thumbnailFile = `${id}/thumbnail_${randomNumber}.${file.ext}`
-        const data = await fs.writeFile(`assets/${fileName}`, base64, 'base64')
-        const fileBuffer = await fs.readFile(`assets/${fileName}`)
+        const thumbnailFile = `thumbnail_${randomNumber}.${file.ext}`
+        const data = await fs.writeFile(`${canvasDir}/${fileName}`, base64, 'base64')
+        const fileBuffer = await fs.readFile(`${canvasDir}/${fileName}`)
         const hash = crypto.createHash('sha256')
-        const thumbnail= await sharp(fileBuffer).resize(130, 130, {}).toFile(`assets/${thumbnailFile}`) 
+        const thumbnail= await sharp(fileBuffer).resize(130, 130, {}).toFile(`${thumbnailDir}/${thumbnailFile}`) 
         const finalHex = hash.update(fileBuffer).digest('base64')
         // const filePath = path.join(path.resolve(), path.join(`assets`))
          const fileHash = await uploadFileToIPFS({ dirPath })
@@ -143,27 +146,37 @@ const mergedListCollectionItems = async (attr) => {
 }
 
 const mergeImagesToUpload = async (attr) => {
-    let { id, originalname, position, buffer, description, title } = attr
+    let { id, originalname, position, buffer, description, title, mimetype } = attr
+    let left=100, top=1760 
     try {
-        if (position && (typeof position === 'string')) {
-            position = JSON.parse(position)
-        }
-        const { top, left } = position
+        // if (position && (typeof position === 'string')) {
+        //     position = JSON.parse(position)
+        //     top = position.top
+        //     left = position.left
+        // }
+        // const { top = 0, left= 0 } = position
         const newiItemId = uuidv4()
-        const dir = await fs.readdir(`assets/${id}`)
-        const fileName = `${newiItemId}/${originalname}`
-        await mkdirp(`assets/${newiItemId}`)
-        const dirPath = `./assets/${newiItemId}`
-        // const data = await fs.writeFile(`assets/${fileName}`, buffer, 'buffer')
-
-        const basefileName = await sharp(buffer).toFile(`assets/${fileName}`)
-        
+        const mergedDirPath = `./assets/${id}/merged`
+        const canvasDirPath = `assets/${id}`
+        const newFileDirPath = `assets/${newiItemId}`
+        const fileName = originalname
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
-        const mergedFileName = `${id}/merged_${randomNumber}.png`
-        const mergeResponse = await sharp(`assets/${id}/${dir[0]}`)//.resize(1000, 800)
-            .composite([{ input: `assets/${newiItemId}/${originalname}`, top: Number(top), left: Number(left) }]).toFile(`assets/${mergedFileName}`)
+        
+        await mkdirp(mergedDirPath)
+        await mkdirp(newFileDirPath)
+        
+        let dir = await fs.readdir(canvasDirPath)
+         dir = dir.filter(file => (String(file).includes('.png') || String(file).includes('.PNG') || String(file).includes('.jpeg')))
 
-        const imgURL = `${process.env.SELF_SERVICE}/${mergedFileName}`
+        
+        await sharp(buffer).rotate(270).toFile(`${newFileDirPath}/${fileName}`)
+        
+        const mergedFileName = `merged_${randomNumber}.${mimetype.split('/')[1]}`
+        const mergeResponse = await sharp(`${canvasDirPath}/${dir[0]}`)//.resize(1000, 800)
+            .composite([{ input: `${newFileDirPath}/${fileName}`, top: top, left: left }])
+            .toFile(`${mergedDirPath}/${mergedFileName}`)
+
+        const mergedImgURL = `${process.env.SELF_SERVICE}/${id}/merged/${mergedFileName}`
         // const thumbnailURL = `${process.env.SELF_SERVICE}/${thumbnailName}`
 
         const itemResult = await db.collection('userCollections').findOne({ id: id })
@@ -172,14 +185,14 @@ const mergeImagesToUpload = async (attr) => {
         // let fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
         // let fileCidHash = String(fileHash.cid)
 
-       let fileHash = await uploadFileToIPFS({ dirPath: `./assets/${fileName}` })
+       let newFileHash = await uploadFileToIPFS({ dirPath: `${newFileDirPath}/${fileName}` })
         
-        let fileBuffer = await fs.readFile(`assets/${fileName}`)
+        let fileBuffer = await fs.readFile(`${newFileDirPath}/${fileName}`)
         let hash = crypto.createHash('sha256')
         let finalHex = hash.update(fileBuffer).digest('base64')
 
         let metadata = METADATA
-        metadata.image = `ipfs://${fileHash}`
+        metadata.image = `ipfs://${newFileHash}`
         metadata.image_integrity = `sha256-${finalHex}`
         let metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
 
@@ -188,7 +201,7 @@ const mergeImagesToUpload = async (attr) => {
             title: title,
             description: description,
             fileName,
-            fileHash,
+            newFileHash,
             metadata,
             metaHash,
             collectionName: itemResult.collectionName,
@@ -196,34 +209,34 @@ const mergeImagesToUpload = async (attr) => {
         }
         const newItemresults = await db.collection('userCollections').insertOne(newItemObj)
 
-        fileHash = await uploadFileToIPFS({ dirPath: `./assets/${mergedFileName}`})
-        fileBuffer = await fs.readFile(`./assets/${mergedFileName}`)
+      const mergedFileHash = await uploadFileToIPFS({ dirPath: `${canvasDirPath}/merged/${mergedFileName}`})
+      const  mergedFileBuffer = await fs.readFile(`${canvasDirPath}/merged/${mergedFileName}`)
         hash = crypto.createHash('sha256')
-        finalHex = hash.update(fileBuffer).digest('base64')
+        finalHex = hash.update(mergedFileBuffer).digest('base64')
         metadata = METADATA
-        metadata.image = `ipfs://${fileHash}`
+        metadata.image = `ipfs://${mergedFileHash}`
         metadata.image_integrity = `sha256-${finalHex}`
         metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
 
         if (itemResult.mergedItem) {
             itemResult.mergedItem.push({
-                fileHash,
+                mergedFileHash,
                 metaHash,
                 metadata,
                 fileName: mergedFileName
             })
         } else {
             itemResult.mergedItem = [{
-                fileHash,
+                mergedFileHash,
                 metaHash,
                 metadata,
                 fileName: mergedFileName
             }]
         }
         const results = await db.collection('userCollections').updateOne({ id: id }, { $set: { 'mergedItem': itemResult.mergedItem } })
-        console.log(imgURL)
+        console.log(mergedImgURL)
 
-        return { mergeResponse, imgURL, fileHash, metaHash }
+        return { mergeResponse, mergedImgURL, mergedFileHash, metaHash }
     } catch (err) {
         console.log(err)
         throw { error: err.message || err }
