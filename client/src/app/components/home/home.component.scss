@@ -1,3 +1,19 @@
+.inn-container{
+    margin-top: 100px;
+    margin-left: 60px;
+    margin-bottom: 20px;
+    margin-right: 60px;
+}
+@media (max-width: 960px) {
+    h1{
+        font-weight: 800 !important;
+        font-size: 60px !important;
+        margin: 0px !important;
+    }
+    .col {
+        margin-bottom: 50px !important;
+    }
+ }
 .col {
     text-align: center;
 }
