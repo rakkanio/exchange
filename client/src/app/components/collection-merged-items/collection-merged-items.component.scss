@@ -1,25 +1,23 @@
-.main{
-    margin-right: 10px;
-    margin-bottom: 10px;
-}
-.title {
+.inn-container {
+    margin-top: 100px;
+    margin-left: 60px;
     margin-bottom: 20px;
-    font-size: 20px;
-    font-weight: 700;
+    margin-right: 60px;
 }
 
-mat-grid-tile{
-    box-shadow: 0px 0px 3px 1px;
-    border-radius: 6px;
-margin: 4px;
+a {
+    cursor: pointer;
 }
 
-mat-grid-list {
-    margin-bottom: 65px;
+@media (max-width: 960px) {
+    .thumbnail {
+        margin-bottom: 15px;
+    }
 }
 img{
     width: 100%;
 }
-a{
-    cursor: pointer;
+.col-md-4{
+    width: 20% !important;
+    margin-bottom: 15px;
 }
