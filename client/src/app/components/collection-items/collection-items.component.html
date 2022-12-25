@@ -1,7 +1,7 @@
  <div class="inn-container">
 <div class="row">
     <div class="col-md-4" *ngFor="let item of items; let i = index">
-      <div class="thumbnail" style="width: 85%;">
+      <div class="thumbnail">
         <a (click)="gotToDetails(item)">
             <img src="{{imageURL}}/{{item.fileName}}" alt="Lights" height="260">
         </a>
