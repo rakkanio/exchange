@@ -10,6 +10,9 @@ a {
 }
 
 @media (max-width: 960px) {
+    .col-md-4{
+        width: 100% !important;
+    }
     .thumbnail {
         margin-bottom: 15px;
     }
