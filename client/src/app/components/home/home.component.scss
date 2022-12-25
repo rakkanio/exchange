@@ -14,14 +14,7 @@
         margin-bottom: 50px !important;
     }
  }
-.col {
-    text-align: center;
-}
 
-h6 {
-    position: relative;
-    top: 30px;
-}
 .discover {
     position: relative;
     top: 15px;
@@ -32,81 +25,6 @@ h6 {
     font-size: 21px;
 }
 
-.gal {
-    position: relative;
-    top: 50px;
-    padding-bottom: 50px;
-}
-.thumbnail {
-    box-shadow: 0px 0px 5px 1px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 5px 1px;
-    width: 100%;
-    overflow: hidden;
-    margin-bottom: 1.8rem;
-    padding: 10px;
-}
-
-.thumbnail:hover {
-    box-shadow: 1px 1px 5px 5px;
-}
-.thumbnail a {
-    text-decoration: none;
-}
-.name {
-    margin-bottom: 10px;
-    text-transform: uppercase;
-    width: 100px;
-    margin-top: 7px;
-}
-.s-icon {
-    width: 40px;
-    float: left;
-    height: 40px;
-    background-color: #816e6e;
-    margin-left: 14px;
-    border-radius: 35px;
-}
-.col-img {
-    border-radius: 10px;
-    overflow: hidden;
-    margin-top: 8px;
-}
-.caption {
-    text-align: center;
-    margin-top: 5px;
-    font-size: 12px;
-}
-.left-title {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    text-align: left;
-    text-decoration: underline;
-    cursor: pointer;
-}
-.right-title {
-    text-align: right;
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 10px;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-.btn-block{
-    float: right;
-    margin-top: 30px;
-    margin-right: 3px;
-}
-.c-btn{
-    background-color: black;
-    color: #fff;
-    padding: 12px;
-    border-radius: 42px;
-    /* margin-top: 10px; */
-    cursor: pointer;
-}
 h1{
     font-weight: 800;
     font-size: 108px;

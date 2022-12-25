@@ -1,19 +1,14 @@
-<div class="block container">
-    <div class="row title">
-        <span>Art</span>
+ <div class="inn-container">
+<div class="row">
+    <div class="col-md-4" *ngFor="let item of items; let i = index">
+      <div class="thumbnail" style="width: 85%;">
+        <a (click)="gotToDetails(item)">
+            <img src="{{imageURL}}/{{item.fileName}}" alt="Lights" height="260">
+        </a>
+      </div>
     </div>
-    <div class="row">
-        <mat-grid-list cols="6" rowHeight="2:2" [gutterSize]="'20px'">
-            <mat-grid-tile *ngFor="let item of items; let i = index">
-                <a (click)="gotToDetails(item)">
-                    <img src="{{imageURL}}/{{item.fileName}}" alt="Lights">
-                </a>
-                <!-- <mat-grid-tile-footer>USDC</mat-grid-tile-footer> -->
-            </mat-grid-tile>
-        </mat-grid-list>
-    </div>
-</div>
-
+  </div>
+ </div>
 <ngx-spinner bdColor="rgba(0, 0, 0, 0.4)" size="medium" color="#fff" type="square-jelly-box" template="<img src='assets/images/spin.gif' style='    height: 50px;
 margin-bottom: 30px;'>" [fullScreen]="true">
     <p style="color: white"> Requesting... </p>
