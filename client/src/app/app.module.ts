@@ -16,8 +16,6 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { ToastrModule } from 'ngx-toastr';
 import { NotificationService } from './services/notification.service';
 import { HandlerService } from './services/handler.service';
-import { AlgoSignerService } from './services/algo-signer.service';
-import { MyAlgoService } from './services/my-algo.service';
 import { HttpService } from './services/http.service';
 import { CacheService } from './services/cache.service';
 import { CollectionMergedItemsComponent } from './components/collection-merged-items/collection-merged-items.component';
@@ -45,8 +43,6 @@ import { ItemDetailsComponent } from './components/item-details/item-details.com
     ToastrModule.forRoot()
   ],
   providers: [NotificationService,
-    AlgoSignerService,
-    MyAlgoService,
     HttpService,
     HandlerService,
     CacheService,

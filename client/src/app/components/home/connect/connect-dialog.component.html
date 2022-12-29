@@ -1,18 +1,6 @@
 <i class="close bi bi-x-circle" mat-button mat-dialog-close></i>
 <div class="title"><span>Connect a wallet</span></div>
 <div class="main">
-    <div class="row">
-        <div><img src="/assets/images/algosigner.png" (click)="connectToAlgoSigner()">
-            <span (click)="connectToAlgoSigner()">AlgoSigner</span></div>
-    </div>
-    <div class="row">
-        <div><img src="/assets/images/myalgo.png" (click)="connectToMyAlgo()">
-            <span (click)="connectToMyAlgo()">My Algo Wallet</span></div>
-    </div>
-    <div class="row">
-        <div><img src="/assets/images/walletconnect.png" (click)="connectToWalletConnect()">
-            <span (click)="connectToWalletConnect()">WalletConnect</span></div>
-    </div>
 </div>
 <div>
     <ngx-loading [show]="loading" [config]="{fullScreenBackdrop:true}"></ngx-loading>
