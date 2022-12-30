@@ -34,11 +34,15 @@ export class ConnectDialogComponent implements OnInit {
 
   async connectToWallet() {
     const self = this;
-    let walletInfo:any ={};
+    self.loading=true;
+    let walletInfo: any = {};
     const isConnected = await self.wagmi.isWalletConnected()
-    if(!isConnected){
-       walletInfo = await self.wagmi.connectToWallet()
+    if (!isConnected) {
+      walletInfo = await self.wagmi.connectToWallet()
     }
+    const balanceInfo = await self.wagmi.fetchBalance(walletInfo.account)
+    self.event.setAccountInfo({ amount: Number(balanceInfo['formatted']).toFixed(2) })
+    self.dialog.closeAll();
     const stateObj = {
       account: walletInfo.account
     }
@@ -46,9 +50,7 @@ export class ConnectDialogComponent implements OnInit {
     self.cacheService.set('walletAddress', stateObj.account);
     self.cacheService.set('active', 'true');
     self.event.setAuth(true);
-    const a= self.wagmi.fetchBalance(walletInfo.account)
-          self.dialog.closeAll();
-    console.log(a)
+     self.loading=false
     return stateObj;
 
     // const reqObj = {

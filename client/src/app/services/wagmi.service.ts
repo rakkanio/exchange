@@ -39,6 +39,6 @@ export class WagmiService {
 
   async fetchBalance(address: any){
     const balance= await fetchBalance({addressOrName: address,})
-    console.log('balance', balance)
+    return balance
   }
 }
