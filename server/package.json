@@ -18,8 +18,14 @@
     "debug": "~2.6.9",
     "dotenv": "^8.2.0",
     "express": "~4.16.0",
+    "ipfs": "^0.65.0",
     "ipfs-http-client": "^56.0.2",
-    "mongodb": "^4.5.0"
+    "jsonwebtoken": "^9.0.0",
+    "mkdirp": "^1.0.4",
+    "mongodb": "^4.5.0",
+    "moralis": "^2.10.4",
+    "sharp": "^0.31.3",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",

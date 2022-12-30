@@ -8,6 +8,7 @@
       "stream": ["./node_modules/stream-browserify"]
     },
     "noImplicitAny": false,
+    "skipLibCheck": true,
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
@@ -22,9 +23,9 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2017",
-    "module": "es2020",
+    "module": "ES2020",
     "lib": [
-      "es2020",
+      "es2017",
       "dom"
     ]
   },

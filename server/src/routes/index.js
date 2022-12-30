@@ -1,11 +1,9 @@
-import express from 'express';
+import express from 'express'
 
-import collectionRouter from './collection';
-import algoAccountRouter from './AlgoAccount';
+import authenticatorRouter from './Authenticator'
 
-const app = express();
+const app = express()
 
-app.use('/api/collection/', collectionRouter);
-app.use('/api/algo/', algoAccountRouter);
+app.use('/api/account/', authenticatorRouter)
 
-export default app;
+export default app

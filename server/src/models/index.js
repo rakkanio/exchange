@@ -1,7 +1,8 @@
 import CollectionModel from './Collection'
-import AlgoAccountModel from './AlgoAccount'
+import AuthenticatorModel from './authenticator'
 
 export{
     CollectionModel,
-    AlgoAccountModel
+    AuthenticatorModel
+    
 } 
