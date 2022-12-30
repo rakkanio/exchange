@@ -41,7 +41,7 @@ export class ConnectDialogComponent implements OnInit {
       walletInfo = await self.wagmi.connectToWallet()
     }
     const balanceInfo = await self.wagmi.fetchBalance(walletInfo.account)
-    self.event.setAccountInfo({ amount: Number(balanceInfo['formatted']).toFixed(2) })
+    self.event.setAccountInfo({ amount: Number(balanceInfo['formatted']).toFixed(5) })
     self.dialog.closeAll();
     const stateObj = {
       account: walletInfo.account
