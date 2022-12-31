@@ -13,7 +13,7 @@
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item" *ngIf="isAuth">
               <a class="nav-link active">
-                ...{{accountInfo.walletAddress?.substr(accountInfo.walletAddress?.length - 4) || ''}}
+                0x...{{accountInfo.walletAddress?.substr(accountInfo.walletAddress?.length - 4) || ''}}
               </a>
             </li>
             <li class="nav-item" *ngIf="isAuth">
