@@ -37,6 +37,7 @@ export class HeaderComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const self = this;
     const active = self.cacheService.get('active');
+     self.accountInfo.walletAddress = self.cacheService.get('walletAddress');
     if (active === 'true') {
       self.isAuth = true;
       await self.authService.isLoggedIn();
