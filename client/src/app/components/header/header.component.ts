@@ -28,6 +28,9 @@ export class HeaderComponent implements OnInit {
     });
     this._accountInfoSubscription = this.event.accountInfoChange.subscribe((value) => {
       this.accountInfo = value;
+      setTimeout(() => {
+        this.accountInfo.walletAddress = this.cacheService.get('walletAddress');
+      }, 10);
     });
     this._uploadSubscription = this.event.uploadChange.subscribe((value) => {
       this.showUpload =  JSON.parse(value);
@@ -37,10 +40,11 @@ export class HeaderComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const self = this;
     const active = self.cacheService.get('active');
-     self.accountInfo.walletAddress = self.cacheService.get('walletAddress');
     if (active === 'true') {
       self.isAuth = true;
       await self.authService.isLoggedIn();
+      this.accountInfo.walletAddress = this.cacheService.get('walletAddress');
+      console.log(this.accountInfo.walletAddress,'sdsd');
     } else {
       self.clearInfo();
     }
