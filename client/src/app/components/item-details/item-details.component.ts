@@ -12,7 +12,8 @@ import { environment } from 'src/environments/environment';
 })
 export class ItemDetailsComponent implements OnInit {
   public detailsData:any={};
-  public imageURL= environment.assetUrl
+  public imageURL= environment.assetUrl;
+  public openseaViewURL= environment.OPENSEA.VIEW_URL+environment.OPENSEA.VIEW_ACCOUNT
 
   constructor(private route: ActivatedRoute, private spinner: NgxSpinnerService, private httpService: HttpService,
     private cacheService: CacheService) { }

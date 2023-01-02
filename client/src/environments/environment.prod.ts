@@ -11,5 +11,9 @@ export const environment = {
     "WALLET_CONNECT": "WALLET_CONNECT"
   },
   ALGO_V2_MAINNET_URL:"https://mainnet-api.algonode.cloud",
-  WALLET_CONNECT_BRIDGE_URL:"https://bridge.walletconnect.org"
+  WALLET_CONNECT_BRIDGE_URL:"https://bridge.walletconnect.org",
+  OPENSEA:{
+    VIEW_URL:"https://opensea.io/assets/ethereum/",
+    VIEW_ACCOUNT:"0xe2d85fbdd8037f0d9890e986ee321c5b9ddac7b1"
+  }
 };
