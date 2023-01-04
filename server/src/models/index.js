@@ -1,5 +1,5 @@
 import CollectionModel from './Collection'
-import AuthenticatorModel from './authenticator'
+import AuthenticatorModel from './Authenticator'
 
 export{
     CollectionModel,
