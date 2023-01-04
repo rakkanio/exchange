@@ -28,13 +28,13 @@ export class CollectionMergedItemsComponent implements OnInit {
       .subscribe(
         (event: any) => {
           self.spinner.hide();
-          self.items = event.data.filteredResult
+          self.items = event.data.results
         }, error=>{
           self.spinner.hide();
         });
   }
   gotToDetails(item){
-    this.cacheService.set('item', JSON.stringify(item))
-    this.router.navigate(["collections/item/details"]);
+    // this.cacheService.set('item', JSON.stringify(item))
+    this.router.navigate(["collections/item/details",item.seqNumber ]);
   }
 }

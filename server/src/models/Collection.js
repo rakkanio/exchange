@@ -45,9 +45,12 @@ const saveDetails = async (attr) => {
         metadata.image = `ipfs://${fileHash}`
         metadata.image_integrity = `sha256-${finalHex}`
         const metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
+        const lastItem = await db.collection('userCollections').find({},{seqNumber:1,_id:-1}).sort({seqNumber:-1}).limit(1).toArray()
         console.log({id,thumbnailFile})
         const newItem = {
             id,
+            type:'scource',
+            seqNumber:Number(lastItem[0].seqNumber) + 1,
             collectionName,
             fileHash,
             fileName: `${id}/${fileName}`,
@@ -88,7 +91,7 @@ const listCollections = async (attr) => {
 const listCollectionItems = async (attr) => {
     try {
         const { collection } = attr
-        let results = await db.collection('userCollections').find({ }).toArray()
+        let results = await db.collection('userCollections').find({type:'source' }).toArray()
         for (let index = 0; index < results.length; index++) {
             results[index]['imgURL'] = `${process.env.SELF_SERVICE}/${results[index].fileName}`
             if (results[index].mergedItem) {
@@ -127,7 +130,7 @@ const listCollectionItemsByFilter = async (attr) => {
 const collectionItemDetail = async (attr) => {
     try {
         const { id } = attr
-        const result = await db.collection('userCollections').findOne({ 'id': id })
+        const result = await db.collection('userCollections').findOne({ 'seqNumber': String(id) })
         result['imgURL'] = `${process.env.SELF_SERVICE}/${result.fileName}`
 
         return { result }
@@ -139,26 +142,24 @@ const collectionItemDetail = async (attr) => {
 const mergedListCollectionItems = async (attr) => {
     try {
         const { collection } = attr
-        let filteredResult = [];
-        let results = await db.collection('userCollections').find({ }).toArray()
-        results = results.filter((item) => item.mergedItem !== undefined)
-            .map(item => {
-                if (item.mergedItem.length) {
-                    item.mergedItem.id=item.id
-                    filteredResult = [...filteredResult, ...item.mergedItem]
-                    // filteredResult = filteredResult.concat(item.mergedItem)
-                } else {
-                    item.mergedItem.id=item.id
-                    filteredResult = [...filteredResult, ...[item.mergedItem]]
-                    // filteredResult = filteredResult.concat([item.mergedItem])
-                }
-                //   filteredResult.push(results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`)  
-            })
-        for (let index = 0; index < filteredResult.length; index++) {
-            filteredResult[index]['imgURL'] = `${process.env.SELF_SERVICE}/${filteredResult[index].fileName}`
-            filteredResult[index]['id'] = filteredResult[index].id
+        let results = await db.collection('userCollections').find({ type:'merged'}).toArray()
+        // results = results.filter((item) => item.mergedItem !== undefined)
+        //     .map(item => {
+        //         if (item.mergedItem.length) {
+        //             item.mergedItem.id=item.id
+        //             filteredResult = [...filteredResult, ...item.mergedItem]
+        //             // filteredResult = filteredResult.concat(item.mergedItem)
+        //         } else {
+        //             item.mergedItem.id=item.id
+        //             filteredResult = [...filteredResult, ...[item.mergedItem]]
+        //             // filteredResult = filteredResult.concat([item.mergedItem])
+        //         }
+        //         //   filteredResult.push(results[index]['mergedItem']['imgURL'] = `${process.env.SELF_SERVICE}/${results[index]['mergedItem'].fileName}`)  
+        //     })
+        for (let index = 0; index < results.length; index++) {
+            results[index]['imgURL'] = `${process.env.SELF_SERVICE}/${results[index].fileName}`
         }
-        return { filteredResult }
+        return { results }
     } catch (err) {
         throw err
     }
@@ -168,7 +169,7 @@ const mergedListCollectionItemsByFilter = async (attr) => {
     try {
         const { collection } = attr
         let filteredResult = [];
-        let results = await db.collection('userCollections').find({ 'collectionName.value': collection }).toArray()
+        let results = await db.collection('userCollections').find({ 'collectionName.value': collection, type:'merged' }).toArray()
         results = results.filter((item) => item.mergedItem !== undefined)
             .map(item => {
                 if (item.mergedItem.length) {
@@ -211,6 +212,7 @@ const mergeImagesToUpload = async (attr) => {
         const fileName = originalname
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
         
+        const lastItem = await db.collection('userCollections').find({},{seqNumber:1,_id:-1}).sort({seqNumber:-1}).limit(1).toArray()
         await mkdirp(`${mergedDirPath}/merged`)
         await mkdirp(newFileDirPath)
         
@@ -263,10 +265,24 @@ const mergeImagesToUpload = async (attr) => {
         metadata.image = `ipfs://${mergedFileHash}`
         metadata.image_integrity = `sha256-${finalHex}`
         let metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
-
+        const mergedId=uuidv4()
+        const newMergedItemObject={
+            id: mergedId,
+            seqNumber:Number(lastItem[0].seqNumber) + 1,
+            mergedFileHash,
+            metaHash,
+            metadata,
+            type:'merged',
+            sourceId: id,
+            fileName: `${mergedPath}${mergedFileName}`
+        }
+      await db.collection('userCollections').insertOne(newMergedItemObject)
         if (itemResult.mergedItem) {
             itemResult.mergedItem.push({
                 mergedFileHash,
+                seqNumber:Number(lastItem[0].seqNumber) + 1,
+                id:mergedId,
+                sourceId: id,
                 metaHash,
                 metadata,
                 fileName: `${mergedPath}${mergedFileName}`
@@ -274,6 +290,9 @@ const mergeImagesToUpload = async (attr) => {
         } else {
             itemResult.mergedItem = [{
                 mergedFileHash,
+                seqNumber:Number(lastItem[0].seqNumber) + 1,
+                id:mergedId,
+                sourceId: id,
                 metaHash,
                 metadata,
                 fileName:  `${mergedPath}${mergedFileName}`

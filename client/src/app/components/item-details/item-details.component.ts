@@ -20,10 +20,10 @@ export class ItemDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     const self=this;
-    self.detailsData= JSON.parse(self.cacheService.get('item'))
-      // this.route.params.subscribe((params: Params) => {
-      //   self.fetchDetails(params['id'] )
-      // })
+    // self.detailsData= JSON.parse(self.cacheService.get('item'))
+      this.route.params.subscribe((params: Params) => {
+        self.fetchDetails(params['id'] )
+      })
   }
   fetchDetails(id){
     const self = this;
