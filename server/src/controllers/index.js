@@ -1,7 +1,7 @@
-import CollectionController from './Collection';
-import AlgoAccountController from './AlgoAccount';
+import CollectionController from './Collection'
+import AuthenticatorController from './Authenticator'
 
 export{
     CollectionController,
-    AlgoAccountController
+    AuthenticatorController
 }
