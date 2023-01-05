@@ -14,13 +14,14 @@ export class ItemDetailsComponent implements OnInit {
   public detailsData:any={};
   public imageURL= environment.assetUrl;
   public openseaViewURL= environment.OPENSEA.VIEW_URL+environment.OPENSEA.VIEW_ACCOUNT
+  public walletAddress:string='';
 
   constructor(private route: ActivatedRoute, private spinner: NgxSpinnerService, private httpService: HttpService,
     private cacheService: CacheService) { }
 
   ngOnInit(): void {
     const self=this;
-    // self.detailsData= JSON.parse(self.cacheService.get('item'))
+    self.walletAddress= self.cacheService.get('walletAddress')
       this.route.params.subscribe((params: Params) => {
         self.fetchDetails(params['id'] )
       })

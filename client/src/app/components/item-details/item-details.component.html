@@ -2,11 +2,11 @@
     <div class="row">
       <div class="col">
         <img src="{{detailsData.imgURL}}" alt="notfound_img" height="350px">
-        <!-- <img *ngIf="!detailsData.mergedItem" src="{{imageURL}}/{{detailsData.fileName}}" alt="notfound_img" height="350px"> -->
       </div>
       <div class="col details">
         <div>
-            <p>Title text</p>
+          <p>MB Genesis # {{detailsData.seqNumber}}</p>
+          <span>Owned by <span class="add">0x...{{(walletAddress).substr(walletAddress.length-4)}}</span></span>
         </div>
         <div>
             <!-- <a class="offer-btn" mat-raised-button>Buy Offer</a> -->
