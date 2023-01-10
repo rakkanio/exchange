@@ -212,15 +212,15 @@ const mergeImagesToUpload = async (attr) => {
         const fileName = originalname
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
         
-        const lastItem = await db.collection('userCollections').find({},{seqNumber:1,_id:-1}).sort({seqNumber:-1}).limit(1).toArray()
+        const lastItem = await db.collection('userCollections').find({},{seqNumber:1,_id:-1}).sort({_id:-1}).limit(1).toArray()
         await mkdirp(`${mergedDirPath}/merged`)
         await mkdirp(newFileDirPath)
         
         let dir = await fs.readdir(canvasDirPath)
          dir = dir.filter(file => (String(file).includes('.png') || String(file).includes('.PNG') || String(file).includes('.jpeg')))
-
+        console.log('Last seq number ', Number(lastItem[0].seqNumber))
         
-        await sharp(buffer).rotate(270).toFile(`${newFileDirPath}/${fileName}`)
+        await sharp(buffer).rotate(90).toFile(`${newFileDirPath}/${fileName}`)
         
         const mergedFileName = `/merged_${randomNumber}.${mimetype.split('/')[1]}`
         const mergeResponse = await sharp(`${canvasDirPath}/${dir[0]}`)//.resize(1000, 800)
@@ -274,9 +274,11 @@ const mergeImagesToUpload = async (attr) => {
             metadata,
             type:'merged',
             sourceId: id,
-            fileName: `${mergedPath}${mergedFileName}`
+            fileName: `${mergedPath}${mergedFileName}`,
+            createdAt: new Date().toISOString()
         }
-      await db.collection('userCollections').insertOne(newMergedItemObject)
+        let newItemObj=  await db.collection('userCollections').insertOne(newMergedItemObject)
+        console.log('newItemObj',JSON.stringify(newItemObj))
         if (itemResult.mergedItem) {
             itemResult.mergedItem.push({
                 mergedFileHash,
