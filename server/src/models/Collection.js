@@ -196,7 +196,7 @@ const mergedListCollectionItemsByFilter = async (attr) => {
 
 const mergeImagesToUpload = async (attr) => {
     let { id, originalname, position, buffer, description, title, mimetype } = attr
-    let left=175, top=1750 
+    let left=175, top=1850 
     try {
         // if (position && (typeof position === 'string')) {
         //     position = JSON.parse(position)
