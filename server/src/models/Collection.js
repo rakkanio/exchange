@@ -220,7 +220,7 @@ const mergeImagesToUpload = async (attr) => {
          dir = dir.filter(file => (String(file).includes('.png') || String(file).includes('.PNG') || String(file).includes('.jpeg')))
         console.log('Last seq number ', Number(lastItem[0].seqNumber))
         
-        await sharp(buffer).rotate(90).toFile(`${newFileDirPath}/${fileName}`)
+        await sharp(buffer).rotate(360).toFile(`${newFileDirPath}/${fileName}`)
         
         const mergedFileName = `/merged_${randomNumber}.${mimetype.split('/')[1]}`
         const mergeResponse = await sharp(`${canvasDirPath}/${dir[0]}`)//.resize(1000, 800)
