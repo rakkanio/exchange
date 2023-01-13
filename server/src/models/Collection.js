@@ -45,7 +45,7 @@ const saveDetails = async (attr) => {
         metadata.image = `ipfs://${fileHash}`
         metadata.image_integrity = `sha256-${finalHex}`
         const metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
-        const lastItem = await db.collection('userCollections').find({},{seqNumber:1,_id:-1}).sort({seqNumber:-1}).limit(1).toArray()
+        const lastItem = await db.collection('userCollections').find({},{seqNumber:1,_id:-1}).sort({_id:-1}).limit(1).toArray()
         console.log({id,thumbnailFile})
         const newItem = {
             id,
@@ -196,7 +196,7 @@ const mergedListCollectionItemsByFilter = async (attr) => {
 
 const mergeImagesToUpload = async (attr) => {
     let { id, originalname, position, buffer, description, title, mimetype } = attr
-    let left=175, top=1760 
+    let left=175, top=1750 
     try {
         // if (position && (typeof position === 'string')) {
         //     position = JSON.parse(position)
