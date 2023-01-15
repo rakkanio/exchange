@@ -49,7 +49,7 @@ const saveDetails = async (attr) => {
         console.log({id,thumbnailFile})
         const newItem = {
             id,
-            type:'scource',
+            type:'source',
             seqNumber:Number(lastItem[0].seqNumber) + 1,
             collectionName,
             fileHash,
