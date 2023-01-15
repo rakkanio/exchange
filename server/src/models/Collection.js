@@ -135,6 +135,7 @@ const collectionItemDetail = async (attr) => {
 
         return { result }
     } catch (err) {
+        console.log('Error while fetching item details', err)
         throw err
     }
 
