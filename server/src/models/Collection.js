@@ -7,6 +7,8 @@ import crypto from 'crypto'
 
 import IPFSModel from './IpfsClient'
 import IPFS_METADATA from '../constants/IPFS_METADATA'
+import COLLECTION from '../constants/COLLECTION'
+
 const { METADATA } = IPFS_METADATA
 // import {SERVER_CONFIG} from '../config'
 // const {IMG_PATH, SELF_SERVICE}=SERVER_CONFIG
@@ -49,7 +51,8 @@ const saveDetails = async (attr) => {
         console.log({id,thumbnailFile})
         const newItem = {
             id,
-            type:'source',
+            status: COLLECTION.ITEM.STATUS.ACTIVE,
+            type: COLLECTION.ITEM.TYPE.SOURCE,
             seqNumber:Number(lastItem[0].seqNumber) + 1,
             collectionName,
             fileHash,
@@ -91,7 +94,7 @@ const listCollections = async (attr) => {
 const listCollectionItems = async (attr) => {
     try {
         const { collection } = attr
-        let results = await db.collection('userCollections').find({type:'source' }).toArray()
+        let results = await db.collection('userCollections').find({type: COLLECTION.ITEM.TYPE.SOURCE, status: COLLECTION.ITEM.STATUS.ACTIVE }).toArray()
         for (let index = 0; index < results.length; index++) {
             results[index]['imgURL'] = `${process.env.SELF_SERVICE}/${results[index].fileName}`
             if (results[index].mergedItem) {
@@ -143,7 +146,7 @@ const collectionItemDetail = async (attr) => {
 const mergedListCollectionItems = async (attr) => {
     try {
         const { collection } = attr
-        let results = await db.collection('userCollections').find({ type:'merged'}).toArray()
+        let results = await db.collection('userCollections').find({ type: COLLECTION.ITEM.TYPE.MERGED, status: COLLECTION.ITEM.STATUS.ACTIVE}).toArray()
         // results = results.filter((item) => item.mergedItem !== undefined)
         //     .map(item => {
         //         if (item.mergedItem.length) {
@@ -170,7 +173,7 @@ const mergedListCollectionItemsByFilter = async (attr) => {
     try {
         const { collection } = attr
         let filteredResult = [];
-        let results = await db.collection('userCollections').find({ 'collectionName.value': collection, type:'merged' }).toArray()
+        let results = await db.collection('userCollections').find({ 'collectionName.value': collection, type: COLLECTION.ITEM.TYPE.MERGED }).toArray()
         results = results.filter((item) => item.mergedItem !== undefined)
             .map(item => {
                 if (item.mergedItem.length) {
@@ -207,14 +210,14 @@ const mergeImagesToUpload = async (attr) => {
         // const { top = 0, left= 0 } = position
         const newiItemId = uuidv4()
         const mergedDirPath = `./assets/${id}`
-        const mergedPath = `${id}/merged`
+        const mergedPath = `${id}/${COLLECTION.ITEM.TYPE.MERGED}`
         const canvasDirPath = `assets/${id}`
         const newFileDirPath = `assets/${newiItemId}`
         const fileName = originalname
         const randomNumber = Math.floor(Math.random() * 90000) + 10000
         
         const lastItem = await db.collection('userCollections').find({},{seqNumber:1,_id:-1}).sort({_id:-1}).limit(1).toArray()
-        await mkdirp(`${mergedDirPath}/merged`)
+        await mkdirp(`${mergedDirPath}/${COLLECTION.ITEM.TYPE.MERGED}`)
         await mkdirp(newFileDirPath)
         
         let dir = await fs.readdir(canvasDirPath)
@@ -258,8 +261,8 @@ const mergeImagesToUpload = async (attr) => {
         // }
         // const newItemresults = await db.collection('userCollections').insertOne(newItemObj)
 
-        const mergedFileHash = await uploadFileToIPFS({ dirPath: `${canvasDirPath}/merged/${mergedFileName}`})
-        const  mergedFileBuffer = await fs.readFile(`${canvasDirPath}/merged/${mergedFileName}`)
+        const mergedFileHash = await uploadFileToIPFS({ dirPath: `${canvasDirPath}/${COLLECTION.ITEM.TYPE.MERGED}/${mergedFileName}`})
+        const  mergedFileBuffer = await fs.readFile(`${canvasDirPath}/${COLLECTION.ITEM.TYPE.MERGED}/${mergedFileName}`)
         const  hash = crypto.createHash('sha256')
         const  finalHex = hash.update(mergedFileBuffer).digest('base64')
         let metadata = METADATA
@@ -273,7 +276,8 @@ const mergeImagesToUpload = async (attr) => {
             mergedFileHash,
             metaHash,
             metadata,
-            type:'merged',
+            type: COLLECTION.ITEM.TYPE.MERGED,
+            status: COLLECTION.ITEM.STATUS.ACTIVE,
             sourceId: id,
             fileName: `${mergedPath}${mergedFileName}`,
             createdAt: new Date().toISOString()
@@ -310,6 +314,19 @@ const mergeImagesToUpload = async (attr) => {
         throw { error: err.message || err }
     }
 }
+const updateCollectionItem = async (attr) => {
+    try {
+        const { id, payload } = attr
+        const result = await db.collection('userCollections').updateOne({id}, {$set: payload})
+        result['imgURL'] = `${process.env.SELF_SERVICE}/${result.fileName}`
+
+        return { result }
+    } catch (err) {
+        console.log('Error while fetching item details', err)
+        throw err
+    }
+
+}
 const CollectionModel = {
     saveDetails,
     listCollections,
@@ -318,7 +335,8 @@ const CollectionModel = {
     mergedListCollectionItems,
     collectionItemDetail,
     mergedListCollectionItemsByFilter,
-    listCollectionItemsByFilter
+    listCollectionItemsByFilter,
+    updateCollectionItem
 }
 
 export default CollectionModel

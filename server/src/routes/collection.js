@@ -6,13 +6,15 @@ import AuthorizationMiddleware from '../middlewares/authorization'
 const {check} = AuthorizationMiddleware
 const upload = multer()
 
-const { create, list, itemList,updateEntry, mergedItemList, itemDetail, itemListByFilter, mergedItemListByFilter } = CollectionController
+const { create, list, itemList,updateEntry, mergedItemList, itemDetail,
+     itemListByFilter, mergedItemListByFilter, updateItem } = CollectionController
 
 
 const router = express.Router()
 
 router.post('/create',check, create)
 router.post('/update-entry', upload.single('file'), updateEntry)
+router.post('/update-item', updateItem)
 router.get('/list', list)
 router.get('/item/list', itemList)
 router.get('/item/list/filter', itemListByFilter)
