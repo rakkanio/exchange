@@ -318,9 +318,8 @@ const updateCollectionItem = async (attr) => {
     try {
         const { id, payload } = attr
         const result = await db.collection('userCollections').updateOne({id}, {$set: payload})
-        result['imgURL'] = `${process.env.SELF_SERVICE}/${result.fileName}`
 
-        return { result }
+        return { result:{message:`updated record count ${result.modifiedCount}`} }
     } catch (err) {
         console.log('Error while fetching item details', err)
         throw err
