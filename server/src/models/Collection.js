@@ -133,7 +133,7 @@ const listCollectionItemsByFilter = async (attr) => {
 const collectionItemDetail = async (attr) => {
     try {
         const { id } = attr
-        const result = await db.collection('userCollections').findOne({ 'seqNumber': id })
+        const result = await db.collection('userCollections').findOne({ 'seqNumber': Number(id) })
         result['imgURL'] = `${process.env.SELF_SERVICE}/${result.fileName}`
 
         return { result }
