@@ -15,5 +15,7 @@ export const environment = {
   OPENSEA:{
     VIEW_URL:"https://opensea.io/assets/ethereum/",
     VIEW_ACCOUNT:"0xe2d85fbdd8037f0d9890e986ee321c5b9ddac7b1"
-  }
+  },
+  GEM_HOT_WALLET: "rQDQytvKuTQ4MrvCBmo5f1WnZkV1dQuwox",
+  GEM_WALLET_ISSUER: "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B"
 };

@@ -21,6 +21,7 @@ import { CacheService } from './services/cache.service';
 import { CollectionMergedItemsComponent } from './components/collection-merged-items/collection-merged-items.component';
 import { ItemDetailsComponent } from './components/item-details/item-details.component';
 import { WagmiService } from './services/wagmi.service';
+import { WalletService } from './services/wallet.service';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { WagmiService } from './services/wagmi.service';
     HandlerService,
     CacheService,
     HandlerService,
-    WagmiService
+    WagmiService,
+    WalletService
     ],
   bootstrap: [AppComponent]
 })
