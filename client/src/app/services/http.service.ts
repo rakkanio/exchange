@@ -25,7 +25,13 @@ export class HttpService {
   }
 
   public get(reqObj:any){
-    reqObj.params.network = this.cacheService.get('network');
+    if(reqObj.params){
+      reqObj.params.network = this.cacheService.get('network');
+    }else{
+      reqObj.params = {
+        network: this.cacheService.get('network')
+      }
+    }
     const options = { params: reqObj.params }
     return this.http.get(`${environment.baseUrl}/${reqObj.url}`, options).pipe(catchError(this.handleError));
   }
