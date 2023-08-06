@@ -1,7 +1,7 @@
 const ALGO = {
     NETWORK_TYPE: {
-        'MAINNET': 'MainNet',
-        'TESTNET': 'TestNet'
+        'MAINNET': 'Mainnet',
+        'TESTNET': 'Testnet'
     },
     WALLET: {
         ALGO_SIGNER: 'ALGO_SIGNER',

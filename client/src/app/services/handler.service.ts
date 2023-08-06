@@ -31,11 +31,13 @@ export class HandlerService {
     try {
       const self = this;
       await self.gemWalletService.connect();
-      const account = await self.gemWalletService.getAddress()
+      const account = await self.gemWalletService.getAddress();
+      const network = await self.gemWalletService.getNetwork();
       const stateObj = {
         account: account,
         walletType: environment.WALLET_TYPE.GEM_WALLET
       }
+      self.cacheService.set('network', network);
       self.cacheService.set('walletObj', JSON.stringify(stateObj));
       self.cacheService.set('walletAddress', stateObj.account);
       self.cacheService.set('walletType', stateObj.walletType);
