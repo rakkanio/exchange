@@ -45,7 +45,8 @@ const saveDetails = async (attr) => {
         // const fileHash = await uploadFileToIPFS({ fileName, filePath: `${filePath}/${fileName}` })
         let metadata = METADATA
         metadata.image = `ipfs://${fileHash}`
-        metadata.image_integrity = `sha256-${finalHex}`
+        metadata.image_url = `ipfs://${fileHash}`
+        // metadata.image_integrity = `sha256-${finalHex}`
         const metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
         const lastItem = await db.collection('userCollections').find({},{seqNumber:1,_id:-1}).sort({_id:-1}).limit(1).toArray()
         console.log({id,thumbnailFile})
@@ -267,7 +268,8 @@ const mergeImagesToUpload = async (attr) => {
         const  finalHex = hash.update(mergedFileBuffer).digest('base64')
         let metadata = METADATA
         metadata.image = `ipfs://${mergedFileHash}`
-        metadata.image_integrity = `sha256-${finalHex}`
+        metadata.image_url = `ipfs://${mergedFileHash}`
+        // metadata.image_integrity = `sha256-${finalHex}`
         let metaHash = await uploadMetaDataToIPFS({ fileName: 'metadata.json ', filePath: metadata })
         const mergedId=uuidv4()
         const newMergedItemObject={
