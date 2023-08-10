@@ -9,9 +9,9 @@
           <span>Owned by <span class="add">0x...{{(walletAddress).substr(walletAddress.length-4)}}</span></span>
         </div>
         <div>
-            <!-- <a class="offer-btn" mat-raised-button>Buy Offer</a> -->
-            <a style="margin-left: 10px;"  class="offer-btn" mat-raised-button  href="{{openseaViewURL}}/{{detailsData.seqNumber}}" target="_blank">
-              see item on open sea</a>
+            <a class="offer-btn" mat-raised-button (click)="mintIt(detailsData)">To Mint</a>
+            <!-- <a style="margin-left: 10px;"  class="offer-btn" mat-raised-button  href="{{openseaViewURL}}/{{detailsData.seqNumber}}" target="_blank">
+              see item on open sea</a> -->
         </div>
       </div>
     </div>

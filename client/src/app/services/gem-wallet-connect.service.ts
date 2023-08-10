@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { HttpService } from './http.service';
 import { WalletService } from './wallet.service';
+import { isInstalled, mintNFT } from "@gemwallet/api";
+
 declare let GemWalletApi: any;
 @Injectable({
   providedIn: 'root'
@@ -59,5 +61,13 @@ export class GemWalletConnectService {
   }
   async getBalance(account) {
     const balance = await this.walletService.fetchAccountBalance(account)
+  }
+  async processMint(reqPayload){
+    isInstalled().then((response) => {
+    mintNFT(reqPayload).then((response) => {
+      console.log("NFT ID: ", response.result?.NFTokenID);
+      console.log("Transaction Hash: ", response.result?.hash);
+    });
+  }).catch(err=> console.log('gem wallet is not installed', err))
   }
 }

@@ -42,8 +42,8 @@ export class HandlerService {
       self.cacheService.set('walletAddress', stateObj.account);
       self.cacheService.set('walletType', stateObj.walletType);
       self.cacheService.set('active', 'true');
-      const {data} = await self.walletService.fetchAccountBalance(account)
-      const {usdAmountObj:{balance = '0.00'}      } = data;
+      const { data } = await self.walletService.fetchAccountBalance(account)
+      const { usdAmountObj: { balance = '0.00' }      } = data;
       self.event.setAccountInfo({ amount:balance })
       self.event.setAuth(true)
       return stateObj;
