@@ -1,28 +1,27 @@
-const METADATA={
-    name: 'Nakkar Test 1',
-    decimals: 0,
-    description: 'Signed card',
-    image: '',
-    image_integrity: 'sha256-YTeQD0RINm8Vg6U/Gl+1IAoBNJl51s0us07nNjOuze8=',
-    image_mimetype: 'image/png',
-    unitName: 'NKKR00T1',
-    assetName: 'Nakkar Test 1',
-    properties: {
-      creator: {
-        name: 'nakkar',
-        address: 'DIINYKCSED5MH2HTVKJA4W4DQXIHXOEDUMX5OBKWVO4YTNADFVAGGWYFZY'
+const METADATA=
+{
+  "schema": "ipfs://QmNpi8rcXEkohca8iXu7zysKKSJYqCvBJn3xJwga8jXqWU",
+  "nftType": "art.v0",
+  "name": "Nakkar Test 1",
+  "description": "XLS-20 Signed",
+  "image": "",
+  "image_url": "",
+  "animation_url": "",
+  "collection": {
+      "name": "Collectible",
+      "description": "Signed art"
+  },
+  "attributes": [
+      {
+          "trait_type": "Category",
+          "value": "Technology"
       },
-      collection: {},
-      keyWords: [],
-      publisher: 'nakkar.io',
-      itemListElement: 1,
-      numberOfItems: 1,
-      arc69: {
-        standard: 'arc69',
-        attributes: []
+      {
+          "trait_type": "Celebrity",
+          "value": "Joel Katz"
       }
-    }
-  }
+  ]
+}
   const IPFS_METADATA={
     METADATA
   }

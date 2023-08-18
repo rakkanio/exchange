@@ -2,6 +2,7 @@
     <div class="row">
         <div class="col-md-4" *ngFor="let item of items; let i = index">
           <div class="thumbnail">
+            <small style="position: absolute; display: none" (click)="updateItem(item)">X</small>
             <a (click)="gotToDetails(item)">
                 <img src="{{imageURL}}/{{item.fileName}}" alt="Lights" height="100%">
             </a>

@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~13.2.0",
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
+    "@gemwallet/api": "^3.4.0",
     "@json-rpc-tools/utils": "^1.7.6",
     "@popperjs/core": "^2.11.6",
     "@wagmi/core": "^0.5.8",
