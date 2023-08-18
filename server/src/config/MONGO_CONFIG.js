@@ -1,5 +1,5 @@
 import { MongoClient, ObjectId } from 'mongodb'
-import SERVER_CONFIG from './SERVER_CONFIG.mjs'
+import SERVER_CONFIG from './SERVER_CONFIG'
 const connection = async () => {
     try {
         const client = await new MongoClient(SERVER_CONFIG.MONGODB_URL).connect();

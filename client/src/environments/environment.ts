@@ -12,14 +12,17 @@ export const environment = {
   WALLET_TYPE: {
     "ALGO_SIGNER": "ALGO_SIGNER",
     "MY_ALGO_WALLET": "MY_ALGO_WALLET",
-    "WALLET_CONNECT": "WALLET_CONNECT"
+    "WALLET_CONNECT": "WALLET_CONNECT",
+    "GEM_WALLET": "GEM_WALLET",
   },
   ALGO_V2_MAINNET_URL:"https://mainnet-api.algonode.cloud",
   WALLET_CONNECT_BRIDGE_URL:"https://bridge.walletconnect.org",
   OPENSEA:{
     VIEW_URL:"https://opensea.io/assets/ethereum/",
     VIEW_ACCOUNT:"0xe2d85fbdd8037f0d9890e986ee321c5b9ddac7b1"
-  }
+  },
+  GEM_HOT_WALLET: "rQDQytvKuTQ4MrvCBmo5f1WnZkV1dQuwox",
+  GEM_WALLET_ISSUER: "rvYAfWj5gh67oV6fW32ZzP3Aw4Eubs59B"
 };
 
 /*

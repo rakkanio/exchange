@@ -1,5 +1,7 @@
 import { CollectionModel } from '../models'
-const { saveDetails, listCollections, listCollectionItems, mergedListCollectionItems, collectionItemDetail, mergeImagesToUpload, listCollectionItemsByFilter, mergedListCollectionItemsByFilter } = CollectionModel
+const { saveDetails, listCollections, listCollectionItems, mergedListCollectionItems,
+     collectionItemDetail, mergeImagesToUpload, listCollectionItemsByFilter, 
+     mergedListCollectionItemsByFilter, updateCollectionItem } = CollectionModel
 
 const create = async (request, respose) => {
     const { body } = request
@@ -18,6 +20,15 @@ const updateEntry = async (request, respose) => {
         respose.status(200).send({ message: 'success', data: result })
     } catch (err) {
         respose.status(500).send({ isError: true, message: 'Error while saving item details', error: err.error })
+    }
+}
+const updateItem = async (request, respose) => {
+    const { body } = request
+    try {
+       const result = await updateCollectionItem(body)
+        respose.status(200).send({ message: 'success', data: result })
+    } catch (err) {
+        respose.status(500).send({ isError: true, message: 'Error while updating item details', error: err.error })
     }
 }
 
@@ -87,6 +98,7 @@ const CollectionController = {
     mergedItemList,
     itemDetail,
     itemListByFilter,
-    mergedItemListByFilter
+    mergedItemListByFilter,
+    updateItem
 }
 export default CollectionController

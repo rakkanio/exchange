@@ -1,8 +1,10 @@
 import CollectionModel from './Collection'
-import AuthenticatorModel from './authenticator'
+import AuthenticatorModel from './Authenticator'
+import ProviderModel from './Provider'
 
 export{
     CollectionModel,
-    AuthenticatorModel
+    AuthenticatorModel,
+    ProviderModel
     
 } 

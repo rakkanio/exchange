@@ -31,57 +31,17 @@ export class ConnectDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-
-  async connectToWallet() {
+  async connectToGemWallet() {
     const self = this;
-    self.loading=true;
-    let walletInfo: any = {};
-    const isConnected = await self.wagmi.isWalletConnected()
-    if (!isConnected) {
-      walletInfo = await self.wagmi.connectToWallet()
+    try {
+      self.loading = true;
+      await self.handlerService.walletConnectHandler(environment.WALLET_TYPE.GEM_WALLET);
+      self.dialog.closeAll();
+      self.loading = false;
+    } catch (err: any) {
+      self.loading = false;
+      self.toastr.error(err, 'Error', { timeOut: environment.ALERT_DESTROY_MAX_TIME });
     }
-    const balanceInfo = await self.wagmi.fetchBalance(walletInfo.account)
-    self.event.setAccountInfo({ amount: Number(balanceInfo['formatted']).toFixed(5) })
-    self.dialog.closeAll();
-    const stateObj = {
-      account: walletInfo.account
-    }
-    self.cacheService.set('walletObj', JSON.stringify(stateObj));
-    self.cacheService.set('walletAddress', stateObj.account);
-    self.cacheService.set('active', 'true');
-    self.event.setAuth(true);
-     self.loading=false
-    return stateObj;
-
-    // const reqObj = {
-    //   address: walletInfo.account,
-    //   chain: walletInfo.chain.id,
-    //   network: 'evm',
-    //   url: "account/request-message"
-    // };
-    // self.spinner.show();
-    // self.httpService.post(reqObj)
-    //   .subscribe(
-    //     async (event: any) => {
-    //       const message = event.data.message;
-    //       const signature = await self.wagmi.signMessage({ message });
-    //       let reqObj = {
-    //         message,
-    //         signature,
-    //         url: "account/request-message"
-    //       }
-    //       self.httpService.post(reqObj)
-    //         .subscribe(
-    //           async (event: any) => {
-    //             console.log('success verification', event)
-
-    //             self.spinner.hide();
-    //           }, error => {
-    //             self.spinner.hide();
-    //           });
-    //     }, error => {
-    //       self.spinner.hide();
-    //     })
   }
 
 }

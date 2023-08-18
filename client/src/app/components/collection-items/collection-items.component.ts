@@ -38,7 +38,7 @@ export class CollectionItemsComponent implements OnInit {
         });
   }
   gotToDetails(item){
-    this.cacheService.set('item', JSON.stringify(item))
-    this.router.navigate(["collections/item/details"]);
+    // this.cacheService.set('item', JSON.stringify(item))
+    this.router.navigate(["collections/item/details", item.seqNumber]);
   }
 }

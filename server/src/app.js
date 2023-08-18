@@ -1,13 +1,13 @@
+//set all config values to env variable and can get it by process.env
+import 'dotenv/config'
 import express from 'express'
 import path from 'path'
-import dotenv from 'dotenv'
 import indexRouter from './routes/index'
 import cors from 'cors'
 import bodyParser from 'body-parser'
 import { promises as fs } from 'fs'
-// import  multer  from  'multer'
-// const forms = multer({ dest: 'uploads/' })
-dotenv.config()
+
+
 import { MongoClient } from '../src/config'
 import { IpfsClient } from './config'
 const { ipfsConnection } = IpfsClient
