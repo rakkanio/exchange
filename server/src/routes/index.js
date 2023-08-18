@@ -2,7 +2,7 @@ import express from 'express'
 
 import authenticatorRouter from './Authenticator'
 import collectionRouter from './collection'
-import providerRouter from './Provider.mjs'
+import providerRouter from './Provider'
 
 const app = express()
 

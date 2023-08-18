@@ -1,9 +1,9 @@
 'use strict'
 
 import express from 'express'
-import ProviderController from '../controllers/Provider.mjs'
+import ProviderController from '../controllers/Provider'
 
-import ProviderNetworkMiddleware from '../middlewares/ProviderNetwork.mjs'
+import ProviderNetworkMiddleware from '../middlewares/ProviderNetwork'
 
 const { initNetwork } = ProviderNetworkMiddleware
 const { getAccountInfo, signTxn, getParams, sendTxn, doOptin, validate, updateAccount, xummGenerate } = ProviderController

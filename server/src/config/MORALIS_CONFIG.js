@@ -2,10 +2,10 @@
 import Moralis  from 'moralis'
 
 const {
-    MORALIS_API_KEY,
-    APP_DOMAIN,
-    FE_URL,
-    AUTH_SECRET
+    MORALIS_API_KEY='',
+    APP_DOMAIN='',
+    FE_URL='',
+    AUTH_SECRET=''
 
 } = process.env
 

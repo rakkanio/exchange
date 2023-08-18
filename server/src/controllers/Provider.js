@@ -1,7 +1,7 @@
 'use strict'
 
-import AlgoAccountModel from "../models/Provider.mjs"
-import XummModel from "../models/Xumm.mjs"
+import AlgoAccountModel from "../models/Provider"
+import XummModel from "../models/Xumm"
 
 const { generateUrl } = XummModel
 const { fetchAccount, signTransaction, sendTransaction, optIn, validateAccount, updateUserAccout } = AlgoAccountModel

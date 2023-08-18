@@ -1,6 +1,6 @@
 'use strict'
-import PROVIDER from '../constants/PROVIDER.mjs'
-import ProviderModule from '../models/Provider.mjs'
+import PROVIDER from '../constants/PROVIDER'
+import ProviderModule from '../models/Provider'
 
 const { initialize } = ProviderModule
 

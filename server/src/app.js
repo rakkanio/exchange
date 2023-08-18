@@ -1,3 +1,5 @@
+//set all config values to env variable and can get it by process.env
+import 'dotenv/config'
 import express from 'express'
 import path from 'path'
 import indexRouter from './routes/index'
@@ -5,8 +7,7 @@ import cors from 'cors'
 import bodyParser from 'body-parser'
 import { promises as fs } from 'fs'
 
-//set all config values to env variable and can get it by process.env
-import 'dotenv/config'
+
 import { MongoClient } from '../src/config'
 import { IpfsClient } from './config'
 const { ipfsConnection } = IpfsClient
