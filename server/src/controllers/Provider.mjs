@@ -1,7 +1,9 @@
 'use strict'
 
 import AlgoAccountModel from "../models/Provider.mjs"
+import XummModel from "../models/xumm"
 
+const { generateUrl } = XummModel
 const { fetchAccount, signTransaction, sendTransaction, optIn, validateAccount, updateUserAccout } = AlgoAccountModel
 
 const getAccountInfo = async (request, response) => {
@@ -75,6 +77,16 @@ const updateAccount = async (request, response) => {
     }
 }
 
+const xummGenerate = async (request, response) => {
+    try {
+        const { body } = request
+        const data = await generateUrl(body)
+        response.status(200).send({ message: 'success', data: data })
+    } catch (err) {
+        response.status(500).send({ isError: true, message: 'Error while generating xumm url', error: err })
+    }
+}
+
 
 const ProviderController = {
     getAccountInfo,
@@ -83,6 +95,7 @@ const ProviderController = {
     sendTxn,
     doOptin,
     validate,
-    updateAccount
+    updateAccount,
+    xummGenerate
 }
 export default ProviderController
