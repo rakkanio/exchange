@@ -1,10 +1,4 @@
 'use strict'
-import dotenv from 'dotenv'
-import path from 'path'
-
-const __dirname = path.resolve()
-dotenv.config({ path: path.join(__dirname, 'src', '.env') })
-
 const {
     XUMM_APP_KEY,
     XUMM_SECRET_KEY,

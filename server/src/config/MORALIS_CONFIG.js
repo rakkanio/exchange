@@ -1,10 +1,5 @@
 'use strict'
-import dotenv from 'dotenv'
-import path from 'path'
 import Moralis  from 'moralis'
-
-const __dirname = path.resolve()
-dotenv.config({ path: path.join(__dirname, 'src', '.env') })
 
 const {
     MORALIS_API_KEY,

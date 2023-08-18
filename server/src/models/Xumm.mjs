@@ -3,11 +3,11 @@
 import {XummSdk} from 'xumm-sdk'
 import { XUMM_CONFIG } from '../config'
 
-const Sdk = new XummSdk(XUMM_CONFIG.XUMM_APP_KEY, XUMM_CONFIG.XUMM_SECRET_KEY)
 
 
 const generateUrl = (attr) => {
-return new Promise(async(resolve, reject)=>{
+  return new Promise(async(resolve, reject)=>{
+  const Sdk = new XummSdk(XUMM_CONFIG.XUMM_APP_KEY, XUMM_CONFIG.XUMM_SECRET_KEY)
   const { amount, destination='' } = attr
   try {
         const appInfo = await Sdk.ping()
