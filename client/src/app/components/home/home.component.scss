@@ -1,19 +1,25 @@
-.inn-container{
+.inn-container {
     margin-top: 100px;
     margin-left: 60px;
     margin-bottom: 20px;
     margin-right: 60px;
 }
+
 @media (max-width: 960px) {
-    h1{
+    .ox_home {
+        height: 300px;
+    }
+
+    h1 {
         font-weight: 800 !important;
         font-size: 60px !important;
         margin: 0px !important;
     }
+
     .col {
         margin-bottom: 50px !important;
     }
- }
+}
 
 .discover {
     position: relative;
@@ -25,11 +31,12 @@
     font-size: 21px;
 }
 
-h1{
+h1 {
     font-weight: 800;
     font-size: 108px;
     margin: 0;
 }
-.img{
+
+.img {
     margin-bottom: 16px;
 }
