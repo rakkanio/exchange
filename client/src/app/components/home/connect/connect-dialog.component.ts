@@ -31,11 +31,11 @@ export class ConnectDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  async connectToGemWallet() {
+  async connectToWalletConnect() {
     const self = this;
     try {
       self.loading = true;
-      await self.handlerService.walletConnectHandler(environment.WALLET_TYPE.GEM_WALLET);
+      await self.handlerService.walletConnectHandler(environment.WALLET_TYPE.WALLET_CONNECT);
       self.dialog.closeAll();
       self.loading = false;
     } catch (err: any) {

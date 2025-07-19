@@ -22,6 +22,7 @@ import { CollectionMergedItemsComponent } from './components/collection-merged-i
 import { ItemDetailsComponent } from './components/item-details/item-details.component';
 import { WagmiService } from './services/wagmi.service';
 import { WalletService } from './services/wallet.service';
+import { WalletConnectService } from './services/wallet-connect.service';
 
 @NgModule({
   declarations: [
@@ -50,8 +51,9 @@ import { WalletService } from './services/wallet.service';
     CacheService,
     HandlerService,
     WagmiService,
-    WalletService
-    ],
+    WalletService,
+    WalletConnectService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

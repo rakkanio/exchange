@@ -18,7 +18,7 @@ export class CollectionItemsComponent implements OnInit {
   constructor(private httpService: HttpService, private spinner: NgxSpinnerService, private router: Router, private cacheService: CacheService) { }
 
   ngOnInit(): void {
-    this.fetchItemList()
+    // this.fetchItemList()
   }
 
   fetchItemList() {
@@ -32,12 +32,12 @@ export class CollectionItemsComponent implements OnInit {
         (event: any) => {
           self.spinner.hide();
           self.items = event.data.results
-        },error=>{
+        }, error => {
           self.spinner.hide();
           console.log('Error while fetching base item', error);
         });
   }
-  gotToDetails(item){
+  gotToDetails(item) {
     // this.cacheService.set('item', JSON.stringify(item))
     this.router.navigate(["collections/item/details", item.seqNumber]);
   }
