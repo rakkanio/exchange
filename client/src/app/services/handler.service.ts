@@ -1,21 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
-import { CacheService } from './cache.service';
-import { EmmiterService } from './emmiter.service';
-import { HttpService } from './http.service';
-import { GemWalletConnectService } from './gem-wallet-connect.service';
+import { environment } from '../../environments/environment.development';
+import { Cache } from './cache.service';
+import { Emmiter } from './emmiter.service';
+import { Http } from './http.service';
 import { WalletService } from './wallet.service';
-import { WalletConnectService } from './wallet-connect.service';
+import { WalletConnect } from './wallet-connect.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class HandlerService {
+export class Handler {
   public _walletConnectSubscription: any = null;
-  constructor(private cacheService: CacheService,
-    private event: EmmiterService,
-    private walletConnectService: WalletConnectService,
+  constructor(private cacheService: Cache,
+    private event: Emmiter,
+    private walletConnectService: WalletConnect,
     private router: Router, private walletService: WalletService) { }
 
   async walletConnectHandler(walletType: string) {

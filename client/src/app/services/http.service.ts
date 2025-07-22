@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpRequest, HttpEvent, HttpResponse, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { CacheService } from './cache.service';
+import { environment } from '../../environments/environment.development';
+import { Cache } from './cache.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class HttpService {
+export class Http {
 
-  constructor(private http: HttpClient, private cacheService: CacheService) { }
+  constructor(private http: HttpClient, private cacheService: Cache) { }
 
   handleError(error: HttpErrorResponse) {
     let errorMessage = 'Unknown error!';
@@ -18,16 +18,16 @@ export class HttpService {
       errorMessage = `Error: ${error.error.message}`;
     } else {
       // Server-side errors
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error?.error?.message ||  error.message}`;
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error?.error?.message || error.message}`;
     }
     console.log(errorMessage);
     return throwError(errorMessage);
   }
 
-  public get(reqObj:any){
-    if(reqObj.params){
+  public get(reqObj: any) {
+    if (reqObj.params) {
       reqObj.params.network = this.cacheService.get('network');
-    }else{
+    } else {
       reqObj.params = {
         network: this.cacheService.get('network')
       }
@@ -36,7 +36,7 @@ export class HttpService {
     return this.http.get(`${environment.baseUrl}/${reqObj.url}`, options).pipe(catchError(this.handleError));
   }
 
-  public post(reqObj:any){
+  public post(reqObj: any) {
     return this.http.post(`${environment.baseUrl}/${reqObj.url}`, reqObj).pipe(catchError(this.handleError));
   }
 }

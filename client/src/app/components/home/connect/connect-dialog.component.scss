@@ -1,10 +1,11 @@
 .close {
-	float: right;
-	margin-top: -10px;
-	margin-right: -5px;
-	cursor: pointer;
+    float: right;
+    margin-top: -10px;
+    margin-right: -5px;
+    cursor: pointer;
 }
-.algo-btn{
+
+.algo-btn {
     width: 125px;
     height: 43px;
     background-color: rgba(0, 0, 0, 0.03);
@@ -13,29 +14,32 @@
     border: 2px solid #3056d3;
     cursor: pointer;
 }
-.row{
+
+.row {
     margin-top: 20px;
 }
 
-.title span{
+.title span {
     text-align: center;
     font-size: 14px;
 }
 
-.title{
+.title {
     text-align: center;
 }
-.main span{
+
+.main span {
     font-size: 14px;
     font-weight: 500;
     margin-left: 5px;
     cursor: pointer;
 }
-.main{
-text-align: center;
+
+.main {
+    text-align: center;
 }
 
-.main img{
+.main img {
     height: 50px;
     margin-top: 20px;
     cursor: pointer;

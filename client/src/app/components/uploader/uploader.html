@@ -1,0 +1,68 @@
+<div class="container">
+
+
+    <div class="col-md-6 p-box">
+        <mat-card class="example-card">
+
+            <mat-card-content>
+                <div class="mb-3">
+                    <label class="form-label">Upload artwork</label>
+                    <input class="form-control" type="file" id="formFile">
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-md-6 p-box">
+        <mat-card class="example-card">
+
+            <mat-card-content>
+                <div class="mb-3">
+                    <label class="form-label">Upload thumbnail</label>
+                    <input class="form-control" type="file" id="formFile">
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-md-6 p-box">
+        <mat-card class="example-card">
+
+            <mat-card-content>
+                <label class="form-label">Artwork properties</label>
+                <div class="row">
+                    <div class="col">
+                        <mat-form-field>
+                            <mat-label>Property name</mat-label>
+                            <input matInput (input)="onInput($event)" placeholder="Hat" />
+
+                        </mat-form-field>
+                    </div>
+                    <div class="col">
+                        <mat-form-field>
+                            <mat-label>Property value</mat-label>
+                            <input matInput (input)="onInput($event)" placeholder="Blue" />
+
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div>
+                    <button class="prop-btn" matButton="outlined">Save propertry</button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="col-md-6 p-box">
+        <mat-card class="example-card" style="height: 160px;">
+
+            <mat-card-content>
+                <mat-label class="form-label">Description</mat-label>
+                <mat-form-field style="width: 100%;">
+
+                    <textarea matInput rows="3" placeholder="Describe your artwork"></textarea>
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div id="submit">
+        <button class="submit-btn" matButton="outlined">Submit</button>
+    </div>
+</div>

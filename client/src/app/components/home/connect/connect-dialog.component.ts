@@ -1,30 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material/dialog';
-import { environment } from 'src/environments/environment';
-import { HandlerService } from 'src/app/services/handler.service';
-import { CacheService } from 'src/app/services/cache.service';
-import { EmmiterService } from 'src/app/services/emmiter.service';
-import { WagmiService } from 'src/app/services/wagmi.service';
-import { HttpService } from 'src/app/services/http.service';
+import { environment } from '../../../../environments/environment.development';
+import { Handler } from '../../../services/handler.service';
+import { Cache } from '../../../services/cache.service';
+import { Emmiter } from '../../../services/emmiter.service';
+import { Http } from '../../../services/http.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-invoice-dialog',
   templateUrl: './connect-dialog.component.html',
-  styleUrls: ['./connect-dialog.component.scss']
+  imports: [],
+  styleUrls: ['./connect-dialog.component.scss'],
 })
-export class ConnectDialogComponent implements OnInit {
+export class ConnectDialog {
   public loading = false;
   public account: any = '';
-  constructor(private toastr: ToastrService,
+  constructor(
     private router: Router, private dialog: MatDialog,
-    private handlerService: HandlerService,
-    private cacheService: CacheService,
-    private event: EmmiterService,
-    private wagmi: WagmiService,
-    private httpService: HttpService,
+    private handlerService: Handler,
+    private cacheService: Cache,
+    private event: Emmiter,
+    // private wagmi: WagmiService,
+    private httpService: Http,
     private spinner: NgxSpinnerService
   ) { }
 
@@ -40,7 +39,7 @@ export class ConnectDialogComponent implements OnInit {
       self.loading = false;
     } catch (err: any) {
       self.loading = false;
-      self.toastr.error(err, 'Error', { timeOut: environment.ALERT_DESTROY_MAX_TIME });
+      // self.toastr.error(err, 'Error', { timeOut: environment.ALERT_DESTROY_MAX_TIME });
     }
   }
 

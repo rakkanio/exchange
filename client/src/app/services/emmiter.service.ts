@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class EmmiterService {
+export class Emmiter {
   public isAuth: any;
   public account: any;
   public accountInfo: any;
@@ -27,11 +27,11 @@ export class EmmiterService {
     this.account = account;
     this.WalletConnectStateChange.next(this.account);
   }
-  setAccountInfo(account) {
+  setAccountInfo(account: any) {
     this.accountInfo = account;
     this.accountInfoChange.next(this.accountInfo);
   }
-  setAdminRole(upload) {
+  setAdminRole(upload: any) {
     this.upload = upload;
     this.uploadChange.next(this.upload);
   }

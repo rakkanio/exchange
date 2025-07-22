@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { EmmiterService } from './emmiter.service';
+import { Emmiter } from './emmiter.service';
 
 describe('EmmiterService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: EmmiterService = TestBed.get(EmmiterService);
+    const service: Emmiter = TestBed.get(Emmiter);
     expect(service).toBeTruthy();
   });
 });
